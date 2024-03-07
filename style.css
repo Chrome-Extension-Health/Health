@@ -1,8 +1,31 @@
-body {
-  width: 500px;
-  height: 300px;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-div {
-  width: 500px;
+body {
+  width: 400px;
+  height: 500px;
+  padding: 10px;
+}
+
+.search {
+  margin-left: 10px;
+}
+
+.container {
+  overflow: scroll;
+  width: 100%;
   height: 100%;
+}
+
+.box {
+  margin: 20px 0;
+  width: fit-content;
+  height: fit-content;
+  overflow: hidden;
+}
+
+.listItems {
+  list-style-type: none;
 }

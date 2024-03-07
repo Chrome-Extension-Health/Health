@@ -70,26 +70,30 @@ let muscleGroup = [
 ];
 
 async function getMuscle() {
-  //
+  // label
   let label = document.createElement("label");
   label.setAttribute("for", "muscle-group");
   label.textContent = "Select muscle group: ";
   document.body.appendChild(label);
-
+  // input
   let input = document.createElement("input");
   input.setAttribute("list", "muscle-group-options");
   input.id = "muscle-group";
   input.name = "muscle-group";
   input.type = "text";
   document.body.appendChild(input);
-
+  // search button
   let search = document.createElement("button");
+  search.classList = "search";
   search.textContent = "Search";
   document.body.appendChild(search);
-
+  // datalist
   let datalist = document.createElement("datalist");
   datalist.id = "muscle-group-options";
   document.body.appendChild(datalist);
+  // container
+  let container = document.createElement("div");
+  container.className = "container";
 
   for (let i = 0; i < muscleGroup.length; i++) {
     let option = document.createElement("option");
@@ -98,6 +102,7 @@ async function getMuscle() {
     option.textContent = muscleGroup[i]; // .substring(0, 1).toUpperCase() +muscleGroup[i].substring(1);
     datalist.appendChild(option);
   }
+
   input.addEventListener("change", async (e) => {
     const res = await fetch(
       `https://api.api-ninjas.com/v1/exercises?muscle=${e.target.value}`,
@@ -105,17 +110,37 @@ async function getMuscle() {
         headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
       }
     );
-    const data = await res.json();
-    for (let j = 0; j < data.length; j++) {
-      let div = document.createElement("div");
-      div.textContent = `${data[j].difficulty} ${data[j].equipment} ${data[j].instructions} ${data[j].muscle} ${data[j].name} ${data[j].type}`;
-      document.body.appendChild(div);
-    }
-    console.log(data);
-  });
+    search.addEventListener("click", async function () {
+      container.innerHTML = "";
 
-  // if (input.value === musclegroup || option.value) {
-  // fetch that muscle group
-  // }
+      const data = await res.json();
+      let keys = Object.keys(data[0]);
+
+      for (let j = 0; j < data.length; j++) {
+        let box = document.createElement("div");
+        box.className = "box";
+        let ul = document.createElement("ul");
+
+        [
+          "name",
+          "type",
+          "muscle",
+          "equipment",
+          "difficulty",
+          "instructions",
+        ].forEach((el, i) => {
+          let li = document.createElement("li");
+          li.className = "listItems";
+          li.textContent = `${keys[i].substring(0, 1).toUpperCase()}${keys[i]
+            .substring(1)
+            .toLowerCase()}: ${data[j][el]}`;
+          ul.appendChild(li);
+        });
+        container.appendChild(box);
+        box.appendChild(ul);
+      }
+      document.body.appendChild(container);
+    });
+  });
 }
 getMuscle();
