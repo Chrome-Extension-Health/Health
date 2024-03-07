@@ -91,7 +91,7 @@ async function getMuscle() {
   let datalist = document.createElement("datalist");
   datalist.id = "muscle-group-options";
   document.body.appendChild(datalist);
-  // container
+  // container for all
   let container = document.createElement("div");
   container.className = "container";
 
@@ -110,16 +110,33 @@ async function getMuscle() {
         headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
       }
     );
+    const data = await res.json();
     search.addEventListener("click", async function () {
       container.innerHTML = "";
 
-      const data = await res.json();
       let keys = Object.keys(data[0]);
 
+      console.log(data);
       for (let j = 0; j < data.length; j++) {
+        // accordian button
+        let acc = document.createElement("button");
+        acc.className = "accordion";
+        acc.textContent = data[j].name;
+        // box is panel
         let box = document.createElement("div");
         box.className = "box";
+
         let ul = document.createElement("ul");
+
+        acc.addEventListener("click", function () {
+          this.classList.toggle("active");
+          panel = this.nextElementSibling;
+          if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+          } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
 
         [
           "name",
@@ -136,6 +153,7 @@ async function getMuscle() {
             .toLowerCase()}: ${data[j][el]}`;
           ul.appendChild(li);
         });
+        container.appendChild(acc);
         container.appendChild(box);
         box.appendChild(ul);
       }
@@ -144,3 +162,5 @@ async function getMuscle() {
   });
 }
 getMuscle();
+
+// async function getDifficulty() {}
