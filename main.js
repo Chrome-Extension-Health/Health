@@ -34,18 +34,21 @@
 // }
 // expert();
 
-// async function muscle() {
-//   let muscle = [];
-//   const res = await fetch(
-//     `https://api.api-ninjas.com/v1/exercises?muscle=abdominals`,
-//     {
-//       headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
-//     }
-//   );
-//   const data = await res.json();
-//   // console.log(data);
-// }
-// muscle();
+let type = [];
+
+async function getType() {
+  // if type array has what the user has typed or selected, change the type
+  const res = await fetch(
+    `https://api.api-ninjas.com/v1/exercises?type=${type}`,
+    {
+      headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
+    }
+  );
+  const data = await res.json();
+  console.log(data);
+  for (let i = 0; i < data.length; i++) {}
+}
+// getType();
 
 let muscleGroup = [
   "abdominals",
@@ -66,7 +69,8 @@ let muscleGroup = [
   "triceps",
 ];
 
-function getMuscle() {
+async function getMuscle() {
+  //
   let label = document.createElement("label");
   label.setAttribute("for", "muscle-group");
   label.textContent = "Select muscle group: ";
@@ -76,7 +80,12 @@ function getMuscle() {
   input.setAttribute("list", "muscle-group-options");
   input.id = "muscle-group";
   input.name = "muscle-group";
+  input.type = "text";
   document.body.appendChild(input);
+
+  let search = document.createElement("button");
+  search.textContent = "Search";
+  document.body.appendChild(search);
 
   let datalist = document.createElement("datalist");
   datalist.id = "muscle-group-options";
@@ -84,24 +93,29 @@ function getMuscle() {
 
   for (let i = 0; i < muscleGroup.length; i++) {
     let option = document.createElement("option");
+    option.id = [i];
     option.setAttribute("value", muscleGroup[i]);
     option.textContent = muscleGroup[i]; // .substring(0, 1).toUpperCase() +muscleGroup[i].substring(1);
     datalist.appendChild(option);
   }
+  input.addEventListener("change", async (e) => {
+    const res = await fetch(
+      `https://api.api-ninjas.com/v1/exercises?muscle=${e.target.value}`,
+      {
+        headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
+      }
+    );
+    const data = await res.json();
+    for (let j = 0; j < data.length; j++) {
+      let div = document.createElement("div");
+      div.textContent = `${data[j].difficulty} ${data[j].equipment} ${data[j].instructions} ${data[j].muscle} ${data[j].name} ${data[j].type}`;
+      document.body.appendChild(div);
+    }
+    console.log(data);
+  });
+
+  // if (input.value === musclegroup || option.value) {
+  // fetch that muscle group
+  // }
 }
 getMuscle();
-
-async function food() {
-  const res = await fetch(
-    "https://fitness-calculator.p.rapidapi.com/foodids/tablenames",
-    {
-      headers: {
-        "X-RapidAPI-Key": "81b7b379e6msh2104c760c387f06p1b2c07jsnb2b4274400e6",
-        "X-RapidAPI-Host": "fitness-calculator.p.rapidapi.com",
-      },
-    }
-  );
-  const data = await res.json();
-  console.log(data.table_names[0]);
-}
-// food();
