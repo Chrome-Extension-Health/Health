@@ -1,6 +1,6 @@
 let searchBtn;
 
-// container for all
+// container for content generated from clicking search
 let container = document.createElement("div");
 container.className = "container";
 
@@ -47,14 +47,15 @@ async function getType() {
   let label = document.createElement("label");
   label.setAttribute("for", "exerciseType");
   label.textContent = "Select type of exercise: ";
-  document.body.appendChild(label);
+  // document.body.appendChild(label);
 
   // input
   let input = document.createElement("input");
   input.setAttribute("list", "exerciseType-options");
   input.id = "exerciseType";
   input.name = "exerciseType";
-  input.exerciseType = "text";
+  input.type = "text";
+  input.placeholder = "Select type of exercise";
   document.body.appendChild(input);
 
   // datalist
@@ -87,7 +88,7 @@ async function getMuscle() {
   let label = document.createElement("label");
   label.setAttribute("for", "muscle-group");
   label.textContent = "Select muscle group: ";
-  document.body.appendChild(label);
+  // document.body.appendChild(label);
 
   // input
   let input = document.createElement("input");
@@ -95,6 +96,7 @@ async function getMuscle() {
   input.id = "muscle-group";
   input.name = "muscle-group";
   input.type = "text";
+  input.placeholder = "Select muscle group";
   document.body.appendChild(input);
 
   // datalist
@@ -127,7 +129,7 @@ async function getDifficulty() {
   let label = document.createElement("label");
   label.setAttribute("for", "difficulty");
   label.textContent = "Select difficulty: ";
-  document.body.appendChild(label);
+  // document.body.appendChild(label);
 
   // input
   let input = document.createElement("input");
@@ -135,6 +137,7 @@ async function getDifficulty() {
   input.id = "difficulty";
   input.name = "difficulty";
   input.type = "text";
+  input.placeholder = "Select difficulty";
   document.body.appendChild(input);
 
   // datalist
@@ -153,8 +156,8 @@ async function getDifficulty() {
 }
 
 async function searching() {
-  getType();
   getMuscle();
+  getType();
   getDifficulty();
   createSearchButton();
   searchBtn.addEventListener("click", async function () {
