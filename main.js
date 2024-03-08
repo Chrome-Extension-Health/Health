@@ -1,14 +1,34 @@
-let searchBtn;
+// body container for all elements
+let bodyContainer = document.createElement("div");
+bodyContainer.className = "bodyContainer";
+document.body.appendChild(bodyContainer);
+
+// top-container
+let topContainer = document.createElement("div");
+topContainer.className = "topContainer";
+bodyContainer.appendChild(topContainer);
+
+// top-left-container
+let topLeftContainer = document.createElement("div");
+topLeftContainer.className = "topLeftContainer";
+topContainer.appendChild(topLeftContainer);
+
+// top-right-container
+let topRightContainer = document.createElement("div");
+topRightContainer.className = "topRightContainer";
+topContainer.appendChild(topRightContainer);
 
 // container for content generated from clicking search
 let container = document.createElement("div");
 container.className = "container";
 
+let searchBtn;
+
 function createSearchButton() {
   searchBtn = document.createElement("button");
   searchBtn.classList = "search";
   searchBtn.textContent = "Search";
-  document.body.appendChild(searchBtn);
+  topRightContainer.appendChild(searchBtn);
 }
 
 let exerciseType = [
@@ -43,25 +63,19 @@ let muscleGroup = [
 let difficulty = ["beginner", "intermediate", "expert"];
 
 async function getType() {
-  // label
-  let label = document.createElement("label");
-  label.setAttribute("for", "exerciseType");
-  label.textContent = "Select type of exercise: ";
-  // document.body.appendChild(label);
-
   // input
   let input = document.createElement("input");
-  input.setAttribute("list", "exerciseType-options");
-  input.id = "exerciseType";
-  input.name = "exerciseType";
-  input.type = "text";
+  input.setAttribute("list", "exercise-type-options");
+  input.id = "exercise-type";
+  input.name = "exercise-type";
+  input.type = "search";
   input.placeholder = "Select type of exercise";
-  document.body.appendChild(input);
+  topLeftContainer.appendChild(input);
 
   // datalist
   let datalist = document.createElement("datalist");
-  datalist.id = "exerciseType-options";
-  document.body.appendChild(datalist);
+  datalist.id = "exercise-type-options";
+  bodyContainer.appendChild(datalist);
 
   //options
   for (let i = 0; i < exerciseType.length; i++) {
@@ -71,38 +85,22 @@ async function getType() {
     option.textContent = exerciseType[i];
     datalist.appendChild(option);
   }
-
-  // input.addEventListener("change", async (e) => {
-  //   const res = await fetch(
-  //     `https://api.api-ninjas.com/v1/exercises?type=${e.target.value}`,
-  //     {
-  //       headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
-  //     }
-  //   );
-  //   const typeData = await res.json();
-  // });
 }
 
 async function getMuscle() {
-  // label
-  let label = document.createElement("label");
-  label.setAttribute("for", "muscle-group");
-  label.textContent = "Select muscle group: ";
-  // document.body.appendChild(label);
-
   // input
   let input = document.createElement("input");
   input.setAttribute("list", "muscle-group-options");
   input.id = "muscle-group";
   input.name = "muscle-group";
-  input.type = "text";
+  input.type = "search";
   input.placeholder = "Select muscle group";
-  document.body.appendChild(input);
+  topLeftContainer.appendChild(input);
 
   // datalist
   let datalist = document.createElement("datalist");
   datalist.id = "muscle-group-options";
-  document.body.appendChild(datalist);
+  bodyContainer.appendChild(datalist);
 
   //options
   for (let i = 0; i < muscleGroup.length; i++) {
@@ -112,38 +110,22 @@ async function getMuscle() {
     option.textContent = muscleGroup[i]; // .substring(0, 1).toUpperCase() +muscleGroup[i].substring(1);
     datalist.appendChild(option);
   }
-
-  // input.addEventListener("change", async (e) => {
-  //   const res = await fetch(
-  //     `https://api.api-ninjas.com/v1/exercises?muscle=${e.target.value}`,
-  //     {
-  //       headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
-  //     }
-  //   );
-  //   const muscleData = await res.json();
-  // });
 }
 
 async function getDifficulty() {
-  // label
-  let label = document.createElement("label");
-  label.setAttribute("for", "difficulty");
-  label.textContent = "Select difficulty: ";
-  // document.body.appendChild(label);
-
   // input
   let input = document.createElement("input");
   input.setAttribute("list", "difficulty-options");
   input.id = "difficulty";
   input.name = "difficulty";
-  input.type = "text";
+  input.type = "search";
   input.placeholder = "Select difficulty";
-  document.body.appendChild(input);
+  topLeftContainer.appendChild(input);
 
   // datalist
   let datalist = document.createElement("datalist");
   datalist.id = "difficulty-options";
-  document.body.appendChild(datalist);
+  bodyContainer.appendChild(datalist);
 
   //options
   for (let i = 0; i < difficulty.length; i++) {
@@ -155,25 +137,36 @@ async function getDifficulty() {
   }
 }
 
+async function getName() {
+  let input = document.createElement("input");
+  input.id = "name";
+  input.name = "name";
+  input.type = "search";
+  input.placeholder = "Name of exercise";
+  topLeftContainer.appendChild(input);
+}
+
 async function searching() {
+  getName();
   getMuscle();
   getType();
   getDifficulty();
   createSearchButton();
+
   searchBtn.addEventListener("click", async function () {
     container.innerHTML = "";
     const muscle = document.getElementById("muscle-group").value;
-    const type = document.getElementById("exerciseType").value;
+    const type = document.getElementById("exercise-type").value;
     const diff = document.getElementById("difficulty").value;
+    const name = document.getElementById("name").value;
     try {
       const res = await fetch(
-        `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}`,
+        `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}&name=${name}`,
         {
           headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
         }
       );
       const searchData = await res.json();
-      console.log(searchData);
 
       let keys = Object.keys(searchData[0]);
 
@@ -210,20 +203,21 @@ async function searching() {
         ].forEach((el, i) => {
           let li = document.createElement("li");
           li.className = "listItems";
+          li.classList.add(el);
           li.textContent = `${keys[i].substring(0, 1).toUpperCase()}${keys[i]
             .substring(1)
             .toLowerCase()}: ${searchData[j][el]}`;
           ul.appendChild(li);
         });
+
         container.appendChild(acc);
         container.appendChild(box);
         box.appendChild(ul);
       }
-      document.body.appendChild(container);
+      bodyContainer.appendChild(container);
     } catch (error) {
-      console.error("Error:", error);
+      console.error(error);
     }
   });
 }
-
 searching();
