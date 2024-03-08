@@ -1,54 +1,25 @@
-// async function beginner() {
-//   const res = await fetch(
-//     "https://api.api-ninjas.com/v1/exercises?difficulty=beginner",
-//     {
-//       headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
-//     }
-//   );
-//   const data = await res.json();
-//   console.log(data);
-// }
-// beginner();
+let searchBtn;
 
-// async function intermediate() {
-//   const res = await fetch(
-//     "https://api.api-ninjas.com/v1/exercises?difficulty=intermediate",
-//     {
-//       headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
-//     }
-//   );
-//   const data = await res.json();
-//   console.log(data);
-// }
-// intermediate();
+// container for all
+let container = document.createElement("div");
+container.className = "container";
 
-// async function expert() {
-//   const res = await fetch(
-//     "https://api.api-ninjas.com/v1/exercises?difficulty=expert",
-//     {
-//       headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
-//     }
-//   );
-//   const data = await res.json();
-//   console.log(data);
-// }
-// expert();
-
-let type = [];
-
-async function getType() {
-  // if type array has what the user has typed or selected, change the type
-  const res = await fetch(
-    `https://api.api-ninjas.com/v1/exercises?type=${type}`,
-    {
-      headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
-    }
-  );
-  const data = await res.json();
-  console.log(data);
-  for (let i = 0; i < data.length; i++) {}
+function createSearchButton() {
+  searchBtn = document.createElement("button");
+  searchBtn.classList = "search";
+  searchBtn.textContent = "Search";
+  document.body.appendChild(searchBtn);
 }
-// getType();
+
+let exerciseType = [
+  "cardio",
+  "olympic_weightlifting",
+  "plyometrics",
+  "powerlifting",
+  "strength",
+  "stretching",
+  "strongman",
+];
 
 let muscleGroup = [
   "abdominals",
@@ -69,12 +40,55 @@ let muscleGroup = [
   "triceps",
 ];
 
+let difficulty = ["beginner", "intermediate", "expert"];
+
+async function getType() {
+  // label
+  let label = document.createElement("label");
+  label.setAttribute("for", "exerciseType");
+  label.textContent = "Select type of exercise: ";
+  document.body.appendChild(label);
+
+  // input
+  let input = document.createElement("input");
+  input.setAttribute("list", "exerciseType-options");
+  input.id = "exerciseType";
+  input.name = "exerciseType";
+  input.exerciseType = "text";
+  document.body.appendChild(input);
+
+  // datalist
+  let datalist = document.createElement("datalist");
+  datalist.id = "exerciseType-options";
+  document.body.appendChild(datalist);
+
+  //options
+  for (let i = 0; i < exerciseType.length; i++) {
+    let option = document.createElement("option");
+    option.id = [i];
+    option.setAttribute("value", exerciseType[i]);
+    option.textContent = exerciseType[i];
+    datalist.appendChild(option);
+  }
+
+  // input.addEventListener("change", async (e) => {
+  //   const res = await fetch(
+  //     `https://api.api-ninjas.com/v1/exercises?type=${e.target.value}`,
+  //     {
+  //       headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
+  //     }
+  //   );
+  //   const typeData = await res.json();
+  // });
+}
+
 async function getMuscle() {
   // label
   let label = document.createElement("label");
   label.setAttribute("for", "muscle-group");
   label.textContent = "Select muscle group: ";
   document.body.appendChild(label);
+
   // input
   let input = document.createElement("input");
   input.setAttribute("list", "muscle-group-options");
@@ -82,19 +96,13 @@ async function getMuscle() {
   input.name = "muscle-group";
   input.type = "text";
   document.body.appendChild(input);
-  // search button
-  let search = document.createElement("button");
-  search.classList = "search";
-  search.textContent = "Search";
-  document.body.appendChild(search);
+
   // datalist
   let datalist = document.createElement("datalist");
   datalist.id = "muscle-group-options";
   document.body.appendChild(datalist);
-  // container for all
-  let container = document.createElement("div");
-  container.className = "container";
 
+  //options
   for (let i = 0; i < muscleGroup.length; i++) {
     let option = document.createElement("option");
     option.id = [i];
@@ -103,29 +111,80 @@ async function getMuscle() {
     datalist.appendChild(option);
   }
 
-  input.addEventListener("change", async (e) => {
-    const res = await fetch(
-      `https://api.api-ninjas.com/v1/exercises?muscle=${e.target.value}`,
-      {
-        headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
-      }
-    );
-    const data = await res.json();
-    search.addEventListener("click", async function () {
-      container.innerHTML = "";
+  // input.addEventListener("change", async (e) => {
+  //   const res = await fetch(
+  //     `https://api.api-ninjas.com/v1/exercises?muscle=${e.target.value}`,
+  //     {
+  //       headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
+  //     }
+  //   );
+  //   const muscleData = await res.json();
+  // });
+}
 
-      let keys = Object.keys(data[0]);
+async function getDifficulty() {
+  // label
+  let label = document.createElement("label");
+  label.setAttribute("for", "difficulty");
+  label.textContent = "Select difficulty: ";
+  document.body.appendChild(label);
 
-      console.log(data);
-      for (let j = 0; j < data.length; j++) {
+  // input
+  let input = document.createElement("input");
+  input.setAttribute("list", "difficulty-options");
+  input.id = "difficulty";
+  input.name = "difficulty";
+  input.type = "text";
+  document.body.appendChild(input);
+
+  // datalist
+  let datalist = document.createElement("datalist");
+  datalist.id = "difficulty-options";
+  document.body.appendChild(datalist);
+
+  //options
+  for (let i = 0; i < difficulty.length; i++) {
+    let option = document.createElement("option");
+    option.id = [i];
+    option.setAttribute("value", difficulty[i]);
+    option.textContent = difficulty[i];
+    datalist.appendChild(option);
+  }
+}
+
+async function searching() {
+  getType();
+  getMuscle();
+  getDifficulty();
+  createSearchButton();
+  searchBtn.addEventListener("click", async function () {
+    container.innerHTML = "";
+    const muscle = document.getElementById("muscle-group").value;
+    const type = document.getElementById("exerciseType").value;
+    const diff = document.getElementById("difficulty").value;
+    try {
+      const res = await fetch(
+        `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}`,
+        {
+          headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
+        }
+      );
+      const searchData = await res.json();
+      console.log(searchData);
+
+      let keys = Object.keys(searchData[0]);
+
+      for (let j = 0; j < searchData.length; j++) {
         // accordian button
         let acc = document.createElement("button");
         acc.className = "accordion";
-        acc.textContent = data[j].name;
+        acc.textContent = searchData[j].name;
+
         // box is panel
         let box = document.createElement("div");
         box.className = "box";
 
+        // unordered list for list items
         let ul = document.createElement("ul");
 
         acc.addEventListener("click", function () {
@@ -150,7 +209,7 @@ async function getMuscle() {
           li.className = "listItems";
           li.textContent = `${keys[i].substring(0, 1).toUpperCase()}${keys[i]
             .substring(1)
-            .toLowerCase()}: ${data[j][el]}`;
+            .toLowerCase()}: ${searchData[j][el]}`;
           ul.appendChild(li);
         });
         container.appendChild(acc);
@@ -158,9 +217,10 @@ async function getMuscle() {
         box.appendChild(ul);
       }
       document.body.appendChild(container);
-    });
+    } catch (error) {
+      console.error("Error:", error);
+    }
   });
 }
-getMuscle();
 
-// async function getDifficulty() {}
+searching();
