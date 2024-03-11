@@ -163,7 +163,7 @@ async function searching() {
       const res = await fetch(
         `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}&name=${name}`,
         {
-          headers: { "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn" },
+          headers: { "X-Api-Key": "" },
         }
       );
       const searchData = await res.json();
