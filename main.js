@@ -193,6 +193,17 @@ async function searching() {
           }
         });
 
+        let expand = document.createElement("i");
+        let spanEx = document.createElement("span");
+        spanEx.appendChild(expand);
+        expand.classList.add("fa-sharp", "fa-solid", "fa-expand");
+        expand.addEventListener("click", function () {
+          let expandedBox = document.createElement("div");
+          expandedBox.className = "expandedBox";
+          // bodyContainer.style.backgroundBlendMode = "black";
+          bodyContainer.appendChild(expandedBox);
+        });
+
         [
           "name",
           "type",
@@ -206,12 +217,18 @@ async function searching() {
           li.classList.add(el);
           li.textContent = `${keys[i].substring(0, 1).toUpperCase()}${keys[i]
             .substring(1)
-            .toLowerCase()}: ${searchData[j][el]}`;
+            .toLowerCase()}: ${searchData[j][el]
+            .substring(0, 1)
+            .toUpperCase()}${searchData[j][el].substring(1).toLowerCase()}`;
           ul.appendChild(li);
+          // let liClasses = li.getAttribute("class");
+          // if (liClasses == "listItems instructions") {
+          // }
         });
 
         container.appendChild(acc);
         container.appendChild(box);
+        box.appendChild(spanEx);
         box.appendChild(ul);
       }
       bodyContainer.appendChild(container);
@@ -221,3 +238,5 @@ async function searching() {
   });
 }
 searching();
+
+// add a button for a div to enlarge it and show everything, blur background

@@ -96,6 +96,27 @@ ul {
 
 .listItems {
   list-style-type: none;
+  font-size: 14px;
+}
+
+span {
+  position: relative;
+}
+
+i {
+  cursor: pointer;
+  position: absolute;
+  transform: translate3d(310px, 10px, 0);
+}
+
+.expandedBox {
+  position: absolute;
+  width: 320px;
+  height: 400px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-image: linear-gradient(135deg, #ff9d6c 10%, #bb4e75 100%);
 }
 
 .instructions {
@@ -103,6 +124,12 @@ ul {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+/* .instructions:hover {
+  overflow: visible;
+  white-space: normal;
+  transition: max-height 0.5s ease-out;
+} */
 
 .accordion {
   background-color: #b03a3a;
@@ -114,6 +141,8 @@ ul {
   border: none;
   outline: none;
   transition: 0.4s;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .active,
