@@ -2,6 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 .bodyContainer {
@@ -13,6 +14,23 @@
   align-items: center;
   /* background-color: rgb(111, 109, 229); */
 }
+
+/* =============== Landing Page =============== */
+
+.landingPage {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: #f3a72d;
+}
+
+.toExercise {
+  height: 70px;
+}
+
+/* =============== Exercise Page =============== */
 
 .backgroundVid {
   position: fixed;
@@ -60,8 +78,28 @@ input[type="search"] {
 .topRightContainer {
   width: 40%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+}
+
+.backToMenuBtn {
+  width: 100px;
+  height: 60px;
+  border: solid 5px #ff0000;
+  border-radius: 10px;
+  background-color: black;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+}
+
+.backToMenuBtn:hover {
+  background-color: #ff0000;
+  font-size: 18px;
+  border: solid 5px rgb(53, 1, 208);
 }
 
 .search {
