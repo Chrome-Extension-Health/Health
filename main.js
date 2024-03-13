@@ -3,17 +3,28 @@ let bodyContainer = document.createElement("div");
 bodyContainer.className = "bodyContainer";
 document.body.appendChild(bodyContainer);
 
+let backgroundVid = document.createElement("video");
+let backgroundVidSrc = document.createElement("source");
+backgroundVid.className = "backgroundVid";
+backgroundVid.autoplay = true;
+backgroundVid.muted = true;
+backgroundVid.loop = true;
+backgroundVidSrc.src = "./seamless.mp4";
+backgroundVidSrc.type = "video/mp4";
+backgroundVid.appendChild(backgroundVidSrc);
+bodyContainer.appendChild(backgroundVid);
+
 // top-container
 let topContainer = document.createElement("div");
 topContainer.className = "topContainer";
 bodyContainer.appendChild(topContainer);
 
-// top-left-container
+// top-left-container in top-container
 let topLeftContainer = document.createElement("div");
 topLeftContainer.className = "topLeftContainer";
 topContainer.appendChild(topLeftContainer);
 
-// top-right-container
+// top-right-container in top-container
 let topRightContainer = document.createElement("div");
 topRightContainer.className = "topRightContainer";
 topContainer.appendChild(topRightContainer);
@@ -23,6 +34,8 @@ let container = document.createElement("div");
 container.className = "container";
 
 let searchBtn;
+
+let message = document.createElement("p");
 
 function createSearchButton() {
   searchBtn = document.createElement("button");
@@ -146,6 +159,7 @@ async function getName() {
   topLeftContainer.appendChild(input);
 }
 
+gapi.load("client", searching);
 async function searching() {
   getName();
   getMuscle();
@@ -155,6 +169,7 @@ async function searching() {
 
   searchBtn.addEventListener("click", async function () {
     container.innerHTML = "";
+    message.innerHTML = "";
     const muscle = document.getElementById("muscle-group").value;
     const type = document.getElementById("exercise-type").value;
     const diff = document.getElementById("difficulty").value;
@@ -163,7 +178,7 @@ async function searching() {
       const res = await fetch(
         `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}&name=${name}`,
         {
-          headers: { "X-Api-Key": "" },
+          headers: { "X-Api-Key": "myKey" }, // put ur key
         }
       );
       const searchData = await res.json();
@@ -183,9 +198,54 @@ async function searching() {
         // unordered list for list items
         let ul = document.createElement("ul");
 
+        //expand icon
+        let expandIcon = document.createElement("i");
+        let spanEx = document.createElement("span");
+        expandIcon.className = "expandIcon";
+        spanEx.className = "spanEx";
+        spanEx.appendChild(expandIcon);
+        expandIcon.classList.add("fa-sharp", "fa-solid", "fa-expand");
+
+        // close icon
+        let closeIcon = document.createElement("i");
+        let spanCl = document.createElement("span");
+        closeIcon.className = "closeIcon";
+        closeIcon.classList.add("fa-sharp", "fa-solid", "fa-circle-xmark");
+        spanCl.className = "spanCl";
+        spanCl.appendChild(closeIcon);
+
+        // expanded box
+        let expandedBox = document.createElement("div");
+        expandedBox.className = "expandedBox";
+
+        // expandIcon when clicked
+        let ul_clone;
+        let keyword = searchData[j].name;
+        let resultsLoaded = false;
+        expandIcon.addEventListener("click", function () {
+          ul_clone = ul.cloneNode(true);
+          const instructionsListItem = ul_clone.querySelector(".instructions");
+          if (instructionsListItem) {
+            instructionsListItem.remove();
+          }
+          if (!resultsLoaded) {
+            loadClient(keyword);
+            resultsLoaded = true;
+            ul_clone.appendChild(li_clone);
+            expandedBox.appendChild(spanCl);
+            expandedBox.appendChild(ul_clone);
+          }
+          bodyContainer.appendChild(expandedBox);
+        });
+
+        closeIcon.addEventListener("click", function () {
+          bodyContainer.removeChild(expandedBox);
+        });
+
+        // accordion when clicked
         acc.addEventListener("click", function () {
           this.classList.toggle("active");
-          panel = this.nextElementSibling;
+          let panel = this.nextElementSibling;
           if (panel.style.maxHeight) {
             panel.style.maxHeight = null;
           } else {
@@ -193,17 +253,57 @@ async function searching() {
           }
         });
 
-        let expand = document.createElement("i");
-        let spanEx = document.createElement("span");
-        spanEx.appendChild(expand);
-        expand.classList.add("fa-sharp", "fa-solid", "fa-expand");
-        expand.addEventListener("click", function () {
-          let expandedBox = document.createElement("div");
-          expandedBox.className = "expandedBox";
-          // bodyContainer.style.backgroundBlendMode = "black";
-          bodyContainer.appendChild(expandedBox);
-        });
+        // Youtube loadClient
+        function loadClient(keyword) {
+          gapi.client.setApiKey("myKey"); // Put ur key
+          return gapi.client
+            .load(
+              "https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"
+            )
+            .then(
+              function () {
+                return gapi.client.youtube.search
+                  .list({
+                    part: ["snippet"],
+                    maxResults: 1,
+                    order: "relevance",
+                    topicId: "/m/027x7n",
+                    q: `how to do ${keyword}`,
+                    safeSearch: "moderate",
+                    type: ["video"],
+                    videoEmbeddable: "true",
+                  })
+                  .then(
+                    function (response) {
+                      setTimeout(function () {
+                        const data = response.result.items[0].id.videoId;
+                        let url = `https://www.youtube.com/embed/${data}`;
+                        let video = document.createElement("iframe");
+                        video.setAttribute("controls", "");
+                        video.setAttribute("src", url);
+                        video.setAttribute("allowfullscreen", "");
+                        video.setAttribute(
+                          "allow",
+                          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        );
+                        video.setAttribute("frameborder", "0");
+                        video.className = "video";
+                        ul_clone.appendChild(video);
+                      });
+                    },
+                    function (err) {
+                      console.error("Execute error", err);
+                    }
+                  );
+              },
+              function (err) {
+                console.error("Error loading GAPI client for API", err);
+              }
+            );
+        }
 
+        // creates list items and appends to ul
+        let li_clone;
         [
           "name",
           "type",
@@ -221,9 +321,7 @@ async function searching() {
             .substring(0, 1)
             .toUpperCase()}${searchData[j][el].substring(1).toLowerCase()}`;
           ul.appendChild(li);
-          // let liClasses = li.getAttribute("class");
-          // if (liClasses == "listItems instructions") {
-          // }
+          li_clone = li.cloneNode(true);
         });
 
         container.appendChild(acc);
@@ -233,10 +331,13 @@ async function searching() {
       }
       bodyContainer.appendChild(container);
     } catch (error) {
+      message.textContent = "Try other combinations";
+      bodyContainer.appendChild(message);
       console.error(error);
     }
   });
 }
-searching();
 
-// add a button for a div to enlarge it and show everything, blur background
+/* 
+1. error in chrome extension
+*/
