@@ -3,9 +3,19 @@ let bodyContainer = document.createElement("div");
 bodyContainer.className = "bodyContainer";
 document.body.appendChild(bodyContainer);
 
+// get css variables
+let root = document.documentElement;
+let style = getComputedStyle(root);
+let darkest = style.getPropertyValue("--darkest");
+let secondDarkest = style.getPropertyValue("--secondDarkest");
+let middle = style.getPropertyValue("--middle");
+let secondLightest = style.getPropertyValue("--secondLightest");
+let lightest = style.getPropertyValue("--lightest");
+
 // landing page
 function landingPage() {
   bodyContainer.innerHTML = "";
+  bodyContainer.style.backgroundColor = darkest;
   let landingPage = document.createElement("div");
   landingPage.className = "landingPage";
   bodyContainer.appendChild(landingPage);
@@ -17,7 +27,10 @@ function landingPage() {
 
   let toExercise = document.createElement("button");
   toExercise.className = "toExercise";
-  toExercise.textContent = "Check Out Exercises";
+  toExercise.textContent = "Exercises";
+  let arrowIcon = document.createElement("i");
+  arrowIcon.classList.add("fa-solid", "fa-angle-right", "arrowIcon");
+  toExercise.appendChild(arrowIcon);
   landingPage.appendChild(toExercise);
 
   toExercise.addEventListener("click", exerciseAPI);
@@ -26,18 +39,19 @@ landingPage();
 
 function exerciseAPI() {
   bodyContainer.innerHTML = "";
+  bodyContainer.style.backgroundColor = lightest;
 
   // Background video on loop
-  let backgroundVid = document.createElement("video");
-  let backgroundVidSrc = document.createElement("source");
-  backgroundVid.className = "backgroundVid";
-  backgroundVid.autoplay = true;
-  backgroundVid.muted = true;
-  backgroundVid.loop = true;
-  backgroundVidSrc.src = "./seamless.mp4";
-  backgroundVidSrc.type = "video/mp4";
-  backgroundVid.appendChild(backgroundVidSrc);
-  bodyContainer.appendChild(backgroundVid);
+  // let backgroundVid = document.createElement("video");
+  // let backgroundVidSrc = document.createElement("source");
+  // backgroundVid.className = "backgroundVid";
+  // backgroundVid.autoplay = true;
+  // backgroundVid.muted = true;
+  // backgroundVid.loop = true;
+  // backgroundVidSrc.src = "./waves.mp4";
+  // backgroundVidSrc.type = "video/mp4";
+  // backgroundVid.appendChild(backgroundVidSrc);
+  // bodyContainer.appendChild(backgroundVid);
 
   // top-container
   let topContainer = document.createElement("div");
@@ -57,6 +71,7 @@ function exerciseAPI() {
   // container for content generated from clicking search
   let container = document.createElement("div");
   container.className = "container";
+  bodyContainer.appendChild(container);
 
   let searchBtn;
 
@@ -64,18 +79,29 @@ function exerciseAPI() {
   let message = document.createElement("p");
 
   // Creates search button
-  function createSearchButton() {
+  function searchButton() {
     searchBtn = document.createElement("button");
     searchBtn.classList = "search";
-    searchBtn.textContent = "Search";
+    let searchIcon = document.createElement("i");
+    searchIcon.classList.add("fa-solid", "fa-magnifying-glass", "searchIcon");
+    searchBtn.appendChild(searchIcon);
     topRightContainer.appendChild(searchBtn);
+
+    searchBtn.addEventListener("mouseover", function () {
+      searchIcon.classList.add("fa-beat");
+    });
+    searchBtn.addEventListener("mouseout", function () {
+      searchIcon.classList.remove("fa-beat");
+    });
   }
 
   // Button for going back to menu
   function backToMenuBtn() {
     backToMenuBtn = document.createElement("button");
     backToMenuBtn.classList = "backToMenuBtn";
-    backToMenuBtn.textContent = "Back To Menu";
+    let menuIcon = document.createElement("i");
+    menuIcon.classList.add("fa-solid", "fa-house", "menuIcon");
+    backToMenuBtn.appendChild(menuIcon);
     topRightContainer.appendChild(backToMenuBtn);
     backToMenuBtn.addEventListener("click", landingPage);
   }
@@ -134,6 +160,14 @@ function exerciseAPI() {
       option.textContent = exerciseType[i];
       datalist.appendChild(option);
     }
+
+    // press enter to search
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchBtn.click();
+      }
+    });
   }
 
   async function getMuscle() {
@@ -159,6 +193,14 @@ function exerciseAPI() {
       option.textContent = muscleGroup[i]; // .substring(0, 1).toUpperCase() +muscleGroup[i].substring(1);
       datalist.appendChild(option);
     }
+
+    // press enter to search
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchBtn.click();
+      }
+    });
   }
 
   async function getDifficulty() {
@@ -184,6 +226,14 @@ function exerciseAPI() {
       option.textContent = difficulty[i];
       datalist.appendChild(option);
     }
+
+    // press enter to search
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchBtn.click();
+      }
+    });
   }
 
   async function getName() {
@@ -193,20 +243,31 @@ function exerciseAPI() {
     input.type = "search";
     input.placeholder = "Name of exercise";
     topLeftContainer.appendChild(input);
+
+    // press enter to search
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchBtn.click();
+      }
+    });
   }
 
-  gapi.load("client", searching);
+  // gapi.load("client", searching);
+  searching();
   async function searching() {
     getName();
     getMuscle();
     getType();
     getDifficulty();
     backToMenuBtn();
-    createSearchButton();
+    searchButton();
+    muscleGroupImg();
 
     searchBtn.addEventListener("click", async function () {
       container.innerHTML = "";
       message.innerHTML = "";
+
       const muscle = document.getElementById("muscle-group").value;
       const type = document.getElementById("exercise-type").value;
       const diff = document.getElementById("difficulty").value;
@@ -215,7 +276,9 @@ function exerciseAPI() {
         const res = await fetch(
           `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}&name=${name}`,
           {
-            headers: { "X-Api-Key": "myKey" }, // put ur key
+            headers: {
+              "X-Api-Key": "myKey",
+            }, // put ur key
           }
         );
         const searchData = await res.json();
@@ -247,13 +310,16 @@ function exerciseAPI() {
           let closeIcon = document.createElement("i");
           let spanCl = document.createElement("span");
           closeIcon.className = "closeIcon";
-          closeIcon.classList.add("fa-sharp", "fa-solid", "fa-circle-xmark");
+          closeIcon.classList.add("fa-solid", "fa-circle-xmark");
           spanCl.className = "spanCl";
           spanCl.appendChild(closeIcon);
 
           // expanded box
           let expandedBox = document.createElement("div");
           expandedBox.className = "expandedBox";
+          let expandedBoxContainer = document.createElement("div");
+          expandedBoxContainer.className = "expandedBoxContainer";
+          expandedBox.appendChild(expandedBoxContainer);
 
           // expandIcon when clicked
           let ul_clone;
@@ -271,7 +337,7 @@ function exerciseAPI() {
               resultsLoaded = true;
               ul_clone.appendChild(li_clone);
               expandedBox.appendChild(spanCl);
-              expandedBox.appendChild(ul_clone);
+              expandedBoxContainer.appendChild(ul_clone);
             }
             bodyContainer.appendChild(expandedBox);
           });
@@ -317,6 +383,8 @@ function exerciseAPI() {
                           const data = response.result.items[0].id.videoId;
                           let url = `https://www.youtube.com/embed/${data}`;
                           let video = document.createElement("iframe");
+                          video.style.width = "250px";
+                          video.style.height = "auto";
                           video.setAttribute("controls", "");
                           video.setAttribute("src", url);
                           video.setAttribute("allowfullscreen", "");
@@ -367,13 +435,23 @@ function exerciseAPI() {
           box.appendChild(spanEx);
           box.appendChild(ul);
         }
-        bodyContainer.appendChild(container);
       } catch (error) {
-        message.textContent = "Try other combinations";
-        bodyContainer.appendChild(message);
+        message.textContent =
+          "No exercises in this parameter. Try other combinations.";
+        message.style.textAlign = "center";
+        container.appendChild(message);
         console.error(error);
       }
     });
+  }
+
+  function muscleGroupImg() {
+    let imgCon = document.createElement("div");
+    imgCon.className = "imgCon";
+    let img = document.createElement("img");
+    img.src = "./muscles.jpg";
+    imgCon.appendChild(img);
+    container.appendChild(imgCon);
   }
 }
 
