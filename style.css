@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: "Raleway", Georgia, sans-serif;
 }
 :root {
   --darkest: #142850;
@@ -20,7 +22,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-color: var(--lightest);
 }
 
 /* =============== Landing Page =============== */
@@ -28,7 +29,6 @@
 .landingPage {
   width: 400px;
   height: 500px;
-  background-color: var(--darkest);
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -39,6 +39,17 @@
   margin-top: 10px;
   color: var(--middle);
   text-align: center;
+  text-shadow: 3px -3px 1px black;
+  /* animation: blur 3s infinite ease-in-out; */
+}
+
+@keyframes blur {
+  0% {
+    filter: blur(0px);
+  }
+  50% {
+    filter: blur(1px);
+  }
 }
 
 .toExercise {
@@ -56,6 +67,7 @@
   align-items: center;
   cursor: pointer;
   transition: all 0.2s linear;
+  animation: upAndDown infinite 1.5s linear;
 }
 
 .arrowIcon {
@@ -69,7 +81,6 @@
   background-color: var(--secondDarkest);
   color: var(--lightest);
   border: 2px solid var(--secondLightest);
-  animation: upAndDown infinite 1.5s linear;
 }
 
 @keyframes upAndDown {
@@ -87,18 +98,18 @@
   }
 }
 
-/* =============== Exercise Page =============== */
-
 /* .backgroundVid {
   position: fixed;
   top: 0;
   left: 0;
-  min-width: 100%;
-  min-height: 100%;
+  width: 400px;
+  height: 500px;
   z-index: -1;
-  background-size: auto;
-  filter: blur(1px);
+  object-fit: cover;
+  animation: blur 3s infinite ease-in-out;
 } */
+
+/* =============== Exercise Page =============== */
 
 /* ===== Inputs & Buttons ===== */
 
@@ -159,7 +170,8 @@ input[type="search"] {
   border: solid 2px var(--darkest);
   background-color: var(--lightest);
   color: var(--darkest);
-  box-shadow: 5px -3px 2px var(--darkest);
+  box-shadow: 10px -6px 0px var(--darkest);
+  transform: translate(-5px, 3px);
 }
 
 .search {
@@ -188,7 +200,8 @@ input[type="search"] {
   border: solid 2px var(--darkest);
   background-color: var(--lightest);
   color: var(--darkest);
-  box-shadow: 5px -3px 2px var(--darkest);
+  box-shadow: 10px -6px 0px var(--darkest);
+  transform: translate(-5px, 3px);
 }
 
 /* ===== Container ===== */
