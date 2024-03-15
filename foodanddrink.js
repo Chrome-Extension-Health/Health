@@ -8,19 +8,7 @@ const dailyIntake = [
   { group: "adult female", age: "30-59", sex: "female", calories: 1850 },
   { group: "elder female", age: ">=60", sex: "female", calories: 1900 },
 ];
-let selectedCalories = 0
-// let totalfatMinLimit = selectedCalories * 0.2;
-// let totalfatMaxLimit = selectedCalories * 0.35;
-// let saturatedfatLimit = selectedCalories * 0.1;
-// let proteinMinLimit = selectedCalories * 0.1;
-// let proteinMaxLimit = selectedCalories * 0.15;
-// let sodiumLimit = 2000;
-// let potassiumMinLimit = 2700;
-// let potassiumMaxLimit = 3100;
-// let carbohydrateMinLimit = selectedCalories * 0.55;
-// let carbohydrateMaxLimit = selectedCalories * 0.75;
-// let fiberLimit = 25;
-// let sugarLimit = selectedCalories * 0.1;
+let selectedCalories = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
   const resultContainer = document.getElementById("result-container");
@@ -40,30 +28,124 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchNutritionAPI(input) {
   const resultContainer = document.getElementById("result-container");
-  const nutritionList = document.createElement("ul");
   const ageSelect = document.getElementById("age-select").value;
   const sexSelect = document.getElementById("sex-select").value;
   for (let i = 0; i < dailyIntake.length; i++) {
-    ageSelect === dailyIntake[i].age && sexSelect === dailyIntake[i].sex
-      ? selectedCalories = dailyIntake[i].calories
+    ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex // still need code blocking no inputs
+      ? (selectedCalories = dailyIntake[i].calories)
       : showError("Please select the corresponding age or sex.");
   }
-  if (selectedCalories !== 0) {
-
-  }
-  // const response = await fetch(nutritionAPI + input, {
-  //   headers: { "X-Api-Key": "fSlNftfk2M+xcXCj+72fPg==LtbIt40Y0yAjeaJ4" },
-  // });
-  // const result = await response.json();
+  let totalfatMinLimit = selectedCalories * 0.2;
+  let totalfatMaxLimit = selectedCalories * 0.35;
+  let saturatedfatMaxLimit = selectedCalories * 0.1;
+  let proteinMinLimit = selectedCalories * 0.1;
+  let proteinMaxLimit = selectedCalories * 0.15;
+  let sodiumMaxLimit = 2000;
+  let potassiumMinLimit = 2700;
+  let potassiumMaxLimit = 3100;
+  let carbohydrateMinLimit = selectedCalories * 0.55;
+  let carbohydrateMaxLimit = selectedCalories * 0.75;
+  let fiberMinLimit = 25;
+  let sugarMaxLimit = selectedCalories * 0.1;
+  const response = await fetch(nutritionAPI + input, {
+    headers: { "X-Api-Key": "fSlNftfk2M+xcXCj+72fPg==LtbIt40Y0yAjeaJ4" },
+  });
+  const result = await response.json();
   if (result) {
     for (let i = 0; i < result.length; i++) {
+      const nutritionList = document.createElement("ul");
       for (const [key, value] of Object.entries(result[i])) {
+        const li = document.createElement("li");
+        // write IF for every key
         if (key === "cholesterol_mg") {
           continue;
         }
-        const li = document.createElement("li");
-        li.textContent = `${key.replace(/_/g, " ")}: ${value}`;
-        nutritionList.appendChild(li);
+        key === "name"
+          ? (li.textContent = `Name: ${value}`)
+          : key === "calories"
+          ? (li.textContent = `Calories: ${value}kcal ${(
+              value / selectedCalories
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "serving_size_g"
+          ? (li.textContent = `Serving size: ${value}g`)
+          : key === "fat_total_g"
+          ? (li.textContent = `Total fat: ${value}g ${(
+              value / totalfatMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}-${(value / totalfatMinLimit).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "fat_saturated_g"
+          ? (li.textContent = `Saturated fat: ${value}g ${(
+              value / saturatedfatMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "protein_g"
+          ? (li.textContent = `Protein: ${value}g ${(
+              value / proteinMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}-${(value / proteinMinLimit).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "sodium_mg"
+          ? (li.textContent = `Sodium: ${value}mg ${(
+              value / sodiumMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "potassium_mg"
+          ? (li.textContent = `Potassium: ${value}mg ${(
+              value / potassiumMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}-${(value / potassiumMinLimit).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "carbohydrates_total_g"
+          ? (li.textContent = `Total carbohydrates: ${value}g ${(
+              value / carbohydrateMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}-${(value / carbohydrateMinLimit).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "fiber_g"
+          ? (li.textContent = `Fiber: ${value}g ${(
+              value / fiberMinLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "sugar_g"
+          ? (li.textContent = `Sugar: ${value}g ${(
+              value / sugarMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : null;
+        if (value == 0) {
+          continue;
+        }
+        if (li.textContent !== "") {
+          nutritionList.appendChild(li);
+        }
       }
       resultContainer.appendChild(nutritionList);
     }
@@ -84,11 +166,12 @@ function hideError() {
 }
 
 //code for later use
-// .toLocaleString("en", { style: "percent", minimumFractionDigits: 1 });
+// .toLocaleString("en", { style: "percent", minimumFractionDigits: 1 })
 
 // let bodyContainer = document.createElement("div"); // body container for all elements
 // bodyContainer.className = "bodyContainer";
 // document.body.appendChild(bodyContainer);
+// bodyContainer.style.border = '1px solid black';
 // let searchInput = document.createElement("input"); // input
 // searchInput.setAttribute("type", "text");
 // searchInput.setAttribute("id", "searchInput");
@@ -105,7 +188,7 @@ function hideError() {
 // bodyContainer.appendChild(resultContainer)
 
 //deprecated code
-
+// li.textContent = `${key.replace(/_/g, " ")}: ${value}`;
 // fetchNutritionAPI("1lb brisket 100g fries");
 // const name = result[i].name;
 // const calories = result[i].calories;
