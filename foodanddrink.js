@@ -1,5 +1,4 @@
 const nutritionAPI = "https://api.api-ninjas.com/v1/nutrition?query=";
-const recipeAPI = "https://api.api-ninjas.com/v1/recipe?query=";
 const dailyIntake = [
   { group: "young male", age: "18-29", sex: "male", calories: 1950 },
   { group: "adult male", age: "30-59", sex: "male", calories: 2350 },
@@ -9,29 +8,84 @@ const dailyIntake = [
   { group: "elder female", age: ">=60", sex: "female", calories: 1900 },
 ];
 let selectedCalories = 0;
-
-document.addEventListener("DOMContentLoaded", function () {
+function nutritionHTML() {
+  let bodyContainer = document.createElement("div"); // body container for all elements
+  bodyContainer.className = "bodyContainer";
+  document.body.appendChild(bodyContainer);
+  bodyContainer.innerHTML = "";
+  let searchInput = document.createElement("input"); // input
+  searchInput.setAttribute("type", "text");
+  searchInput.setAttribute("id", "searchInput");
+  searchInput.setAttribute("placeholder", "e.g. 1lb brisket 100g fries");
+  bodyContainer.appendChild(searchInput);
+  let createSubmitButton = document.createElement("button"); // button
+  createSubmitButton.setAttribute("id", "submitButton");
+  createSubmitButton.textContent = "Search";
+  bodyContainer.appendChild(createSubmitButton);
+  let age = document.createElement("select"); // age-select
+  age.setAttribute("name", "age");
+  age.setAttribute("id", "age-select");
+  bodyContainer.appendChild(age);
+  let ageOption1 = document.createElement("option");
+  ageOption1.setAttribute("value", "");
+  ageOption1.textContent = "--Age--";
+  age.appendChild(ageOption1);
+  let ageOption2 = document.createElement("option");
+  ageOption2.setAttribute("value", "18-29");
+  ageOption2.textContent = "18-29";
+  age.appendChild(ageOption2);
+  let ageOption3 = document.createElement("option");
+  ageOption3.setAttribute("value", "30-59");
+  ageOption3.textContent = "30-59";
+  age.appendChild(ageOption3);
+  let ageOption4 = document.createElement("option");
+  ageOption4.setAttribute("value", ">=60");
+  ageOption4.textContent = ">=60";
+  age.appendChild(ageOption4);
+  let sex = document.createElement("select"); // sex-select
+  sex.setAttribute("name", "sex");
+  sex.setAttribute("id", "sex-select");
+  bodyContainer.appendChild(sex);
+  let sexOption1 = document.createElement("option");
+  sexOption1.setAttribute("value", "");
+  sexOption1.textContent = "--Sex--";
+  sex.appendChild(sexOption1);
+  let sexOption2 = document.createElement("option");
+  sexOption2.setAttribute("value", "male");
+  sexOption2.textContent = "Male";
+  sex.appendChild(sexOption2);
+  let sexOption3 = document.createElement("option");
+  sexOption3.setAttribute("value", "female");
+  sexOption3.textContent = "Female";
+  sex.appendChild(sexOption3);
+  let error = document.createElement("error"); // error
+  error.setAttribute("id", "error");
+  bodyContainer.appendChild(error);
+  let resultContainer = document.createElement("div"); // result container
+  resultContainer.setAttribute("id", "result-container");
+  bodyContainer.appendChild(resultContainer);
+}
+nutritionHTML();
+const submitButton = document.getElementById("submitButton");
+submitButton.addEventListener("click", async function () {
   const resultContainer = document.getElementById("result-container");
-  const submitButton = document.getElementById("submitButton");
-  submitButton.addEventListener("click", async function () {
-    resultContainer.innerHTML = ""; // clear
-    hideError();
-    const searchInput = document.getElementById("searchInput"); // get input
-    const searching = searchInput.value.trim();
-    searchInput.value = searching;
-    const regex = new RegExp(/^[a-zA-Z0-9 ]*$/);
-    regex.test(searching)
-      ? await fetchNutritionAPI(searching)
-      : showError("Please input correctly.");
-  });
-});
 
+  resultContainer.innerHTML = ""; // clear
+  hideError();
+  const searchInput = document.getElementById("searchInput"); // get input
+  const searching = searchInput.value.trim();
+  searchInput.value = searching;
+  const regex = new RegExp(/^[a-zA-Z0-9 ]*$/);
+  regex.test(searching)
+    ? await fetchNutritionAPI(searching)
+    : showError("Please input correctly.");
+});
 async function fetchNutritionAPI(input) {
   const resultContainer = document.getElementById("result-container");
   const ageSelect = document.getElementById("age-select").value;
   const sexSelect = document.getElementById("sex-select").value;
   for (let i = 0; i < dailyIntake.length; i++) {
-    ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex // still need code blocking no inputs
+    ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex // still need code to block empty inputs
       ? (selectedCalories = dailyIntake[i].calories)
       : showError("Please select the corresponding age or sex.");
   }
@@ -168,25 +222,6 @@ function hideError() {
 //code for later use
 // .toLocaleString("en", { style: "percent", minimumFractionDigits: 1 })
 
-// let bodyContainer = document.createElement("div"); // body container for all elements
-// bodyContainer.className = "bodyContainer";
-// document.body.appendChild(bodyContainer);
-// bodyContainer.style.border = '1px solid black';
-// let searchInput = document.createElement("input"); // input
-// searchInput.setAttribute("type", "text");
-// searchInput.setAttribute("id", "searchInput");
-// searchInput.setAttribute("placeholder", "e.g. 1lb brisket 100g fries");
-// bodyContainer.appendChild(searchInput);
-// let submitButton = document.createElement("button"); // button
-// submitButton.setAttribute("id", "submitButton");
-// bodyContainer.appendChild(submitButton);
-// let error = document.createElement("error");
-// error.setAttribute("id", "error");
-// bodyContainer.appendChild(error);
-// let resultContainer = document.createElement('div')
-// resultContainer.setAttribute('id', 'result-container')
-// bodyContainer.appendChild(resultContainer)
-
 //deprecated code
 // li.textContent = `${key.replace(/_/g, " ")}: ${value}`;
 // fetchNutritionAPI("1lb brisket 100g fries");
@@ -202,6 +237,7 @@ function hideError() {
 // const fiber = result[i].fiber_g;
 // const sugar = result[i].sugar_g;
 
+// const recipeAPI = "https://api.api-ninjas.com/v1/recipe?query=";
 // async function fetchrecipeAPI(input) {
 //   const response = await fetch(recipeAPI + input, {
 //     headers: { "X-Api-Key": "fSlNftfk2M+xcXCj+72fPg==LtbIt40Y0yAjeaJ4" },
