@@ -12,11 +12,13 @@ let middle = style.getPropertyValue("--middle");
 let secondLightest = style.getPropertyValue("--secondLightest");
 let lightest = style.getPropertyValue("--lightest");
 
+landingPage();
+
 // landing page
 function landingPage() {
   bodyContainer.innerHTML = "";
   bodyContainer.style.removeProperty("background-color");
-  bodyContainer.style.backgroundColor = darkest;
+  bodyContainer.style.backgroundColor = "#abd0d9";
   let landingPage = document.createElement("div");
   landingPage.className = "landingPage";
   bodyContainer.appendChild(landingPage);
@@ -46,7 +48,6 @@ function landingPage() {
   // backgroundVid.type = "video/mp4";
   // landingPage.appendChild(backgroundVid);
 }
-landingPage();
 
 function exerciseAPI() {
   bodyContainer.innerHTML = "";
@@ -136,7 +137,7 @@ function exerciseAPI() {
 
   let difficulty = ["beginner", "intermediate", "expert"];
 
-  async function getType() {
+  function getType() {
     // input
     let input = document.createElement("input");
     input.setAttribute("list", "exercise-type-options");
@@ -169,7 +170,7 @@ function exerciseAPI() {
     });
   }
 
-  async function getMuscle() {
+  function getMuscle() {
     // input
     let input = document.createElement("input");
     input.setAttribute("list", "muscle-group-options");
@@ -202,7 +203,7 @@ function exerciseAPI() {
     });
   }
 
-  async function getDifficulty() {
+  function getDifficulty() {
     // input
     let input = document.createElement("input");
     input.setAttribute("list", "difficulty-options");
@@ -235,7 +236,7 @@ function exerciseAPI() {
     });
   }
 
-  async function getName() {
+  function getName() {
     let input = document.createElement("input");
     input.id = "name";
     input.name = "name";
@@ -257,14 +258,15 @@ function exerciseAPI() {
   // gapi.load("client", searching);
   searching();
 
-  async function searching() {
+  function searching() {
     getName();
     getMuscle();
     getType();
     getDifficulty();
     backToMenuBtn();
     searchButton();
-    muscleGroupImg();
+
+    muscleGroupImg(container);
 
     searchBtn.addEventListener("click", function () {
       container.innerHTML = "";
@@ -275,207 +277,227 @@ function exerciseAPI() {
       const diff = document.getElementById("difficulty").value;
       const name = document.getElementById("name").value;
 
-      let num = 0;
-      // numAddBtn.textContent = "Next Page";
-      // topRightContainer.appendChild(numAddBtn);
-      // numAddBtn.addEventListener("click", function () {
-      //   num += 1;
-      //   container.innerHTML = "";
-      //   message.innerHTML = "";
-      //   callAPI(muscle, type, diff, name, num);
-      // });
-
-      callAPI();
-
-      async function callAPI() {
-        try {
-          const res = await fetch(
-            `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}&name=${name}&offset=${num}`,
-            {
-              headers: {
-                "X-Api-Key": "key",
-              }, // put ur key
-            }
-          );
-          const searchData = await res.json();
-
-          let keys = Object.keys(searchData[0]);
-
-          for (let j = 0; j < searchData.length; j++) {
-            // accordian button
-            let acc = document.createElement("button");
-            acc.className = "accordion";
-            acc.textContent = searchData[j].name;
-
-            // box is panel
-            let box = document.createElement("div");
-            box.className = "box";
-
-            // unordered list for list items
-            let ul = document.createElement("ul");
-
-            //expand icon
-            let expandIcon = document.createElement("i");
-            let spanEx = document.createElement("span");
-            expandIcon.className = "expandIcon";
-            spanEx.className = "spanEx";
-            spanEx.appendChild(expandIcon);
-            expandIcon.classList.add("fa-sharp", "fa-solid", "fa-expand");
-
-            // close icon
-            let closeIcon = document.createElement("i");
-            let spanCl = document.createElement("span");
-            closeIcon.className = "closeIcon";
-            closeIcon.classList.add("fa-solid", "fa-circle-xmark");
-            spanCl.className = "spanCl";
-            spanCl.appendChild(closeIcon);
-
-            // expanded box
-            let expandedBox = document.createElement("div");
-            expandedBox.className = "expandedBox";
-            let expandedBoxContainer = document.createElement("div");
-            expandedBoxContainer.className = "expandedBoxContainer";
-            expandedBox.appendChild(expandedBoxContainer);
-
-            // expandIcon when clicked
-            let ul_clone;
-            let keyword = searchData[j].name;
-            let resultsLoaded = false;
-            expandIcon.addEventListener("click", function () {
-              ul_clone = ul.cloneNode(true);
-              const instructionsListItem =
-                ul_clone.querySelector(".instructions");
-              if (instructionsListItem) {
-                instructionsListItem.remove();
-              }
-              if (!resultsLoaded) {
-                loadClient(keyword);
-                resultsLoaded = true;
-                ul_clone.appendChild(li_clone);
-                expandedBox.appendChild(spanCl);
-                expandedBoxContainer.appendChild(ul_clone);
-              }
-              bodyContainer.appendChild(expandedBox);
-            });
-
-            closeIcon.addEventListener("click", function () {
-              bodyContainer.removeChild(expandedBox);
-            });
-
-            // accordion when clicked
-            acc.addEventListener("click", function () {
-              this.classList.toggle("active");
-              let panel = this.nextElementSibling;
-              if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-              } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-              }
-            });
-
-            // Youtube loadClient
-            function loadClient(keyword) {
-              gapi.client.setApiKey("myKey"); // Put ur key
-              return gapi.client
-                .load(
-                  "https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"
-                )
-                .then(
-                  function () {
-                    return gapi.client.youtube.search
-                      .list({
-                        part: ["snippet"],
-                        maxResults: 1,
-                        order: "relevance",
-                        topicId: "/m/027x7n",
-                        q: `how to do ${keyword}`,
-                        safeSearch: "moderate",
-                        type: ["video"],
-                        videoEmbeddable: "true",
-                      })
-                      .then(
-                        function (response) {
-                          setTimeout(function () {
-                            const data = response.result.items[0].id.videoId;
-                            let url = `https://www.youtube.com/embed/${data}`;
-                            let video = document.createElement("iframe");
-                            video.style.width = "250px";
-                            video.style.height = "auto";
-                            video.setAttribute("controls", "");
-                            video.setAttribute("src", url);
-                            video.setAttribute("allowfullscreen", "");
-                            video.setAttribute(
-                              "allow",
-                              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            );
-                            video.setAttribute("frameborder", "0");
-                            video.className = "video";
-                            ul_clone.appendChild(video);
-                          });
-                        },
-                        function (err) {
-                          console.error("Execute error", err);
-                        }
-                      );
-                  },
-                  function (err) {
-                    console.error("Error loading GAPI client for API", err);
-                  }
-                );
-            }
-
-            // creates list items and appends to ul
-            let li_clone;
-            [
-              "name",
-              "type",
-              "muscle",
-              "equipment",
-              "difficulty",
-              "instructions",
-            ].forEach((el, i) => {
-              let li = document.createElement("li");
-              li.className = "listItems";
-              li.classList.add(el);
-              li.textContent = `${keys[i].substring(0, 1).toUpperCase()}${keys[
-                i
-              ]
-                .substring(1)
-                .toLowerCase()}: ${searchData[j][el]
-                .substring(0, 1)
-                .toUpperCase()}${searchData[j][el].substring(1).toLowerCase()}`;
-              ul.appendChild(li);
-              li_clone = li.cloneNode(true);
-            });
-
-            container.appendChild(acc);
-            container.appendChild(box);
-            box.appendChild(spanEx);
-            box.appendChild(ul);
-          }
-        } catch (error) {
-          message.textContent =
-            "No exercises in this parameter. Try other combinations.";
-          message.style.textAlign = "center";
-          container.appendChild(message);
-          console.log(error);
-        }
-      }
+      callAPI(muscle, type, diff, name, message, container);
     });
   }
+}
 
-  function muscleGroupImg() {
-    let imgCon = document.createElement("div");
-    imgCon.className = "imgCon";
-    let img = document.createElement("img");
-    img.src = "./muscles.jpg";
-    imgCon.appendChild(img);
-    container.appendChild(imgCon);
+// calls exercise API, has youtube api inside
+async function callAPI(muscle, type, diff, name, message, container) {
+  try {
+    const res = await fetch(
+      `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}&name=${name}`,
+      {
+        headers: {
+          "X-Api-Key": "mykey",
+        }, // put ur key
+      }
+    );
+    const searchData = await res.json();
+
+    let keys = Object.keys(searchData[0]);
+
+    for (let j = 0; j < searchData.length; j++) {
+      // accordian button
+      let acc = document.createElement("button");
+      acc.className = "accordion";
+      acc.textContent = searchData[j].name;
+
+      // box is panel
+      let box = document.createElement("div");
+      box.className = "box";
+
+      // unordered list for list items
+      let ul = document.createElement("ul");
+
+      //expand icon
+      let expandIcon = document.createElement("i");
+      let spanEx = document.createElement("span");
+      expandIcon.className = "expandIcon";
+      spanEx.className = "spanEx";
+      spanEx.appendChild(expandIcon);
+      expandIcon.classList.add("fa-sharp", "fa-solid", "fa-expand");
+
+      // close icon
+      let closeIcon = document.createElement("i");
+      let spanCl = document.createElement("span");
+      closeIcon.className = "closeIcon";
+      closeIcon.classList.add("fa-solid", "fa-circle-xmark");
+      spanCl.className = "spanCl";
+      spanCl.appendChild(closeIcon);
+
+      // expanded box
+      let expandedBox = document.createElement("div");
+      expandedBox.className = "expandedBox";
+      let expandedBoxContainer = document.createElement("div");
+      expandedBoxContainer.className = "expandedBoxContainer";
+      expandedBox.appendChild(expandedBoxContainer);
+
+      // expandIcon when clicked
+      let ul_clone;
+      let keyword = searchData[j].name;
+      let resultsLoaded = false;
+      expandIcon.addEventListener("click", function () {
+        expandedBox.style.animation = "fadeIn 0.5s ease-in";
+        ul_clone = ul.cloneNode(true);
+        const instructionsListItem = ul_clone.querySelector(".instructions");
+        if (instructionsListItem) {
+          instructionsListItem.remove();
+        }
+        if (!resultsLoaded) {
+          // getVid(keyword, ul_clone);
+          resultsLoaded = true;
+          ul_clone.appendChild(li_clone);
+          expandedBox.appendChild(spanCl);
+          expandedBoxContainer.appendChild(ul_clone);
+        }
+
+        bodyContainer.appendChild(expandedBox);
+      });
+
+      closeIcon.addEventListener("click", function () {
+        expandedBox.style.animation = "fadeOut 0.4s ease-out";
+        setTimeout(function () {
+          bodyContainer.removeChild(expandedBox);
+        }, 390);
+      });
+
+      // accordion when clicked
+      acc.addEventListener("click", function () {
+        this.classList.toggle("active");
+        let panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+
+      // creates list items and appends to ul
+      let li_clone;
+      [
+        "name",
+        "type",
+        "muscle",
+        "equipment",
+        "difficulty",
+        "instructions",
+      ].forEach((el, i) => {
+        let li = document.createElement("li");
+        li.className = "listItems";
+        li.classList.add(el);
+        li.textContent = `${keys[i].substring(0, 1).toUpperCase()}${keys[i]
+          .substring(1)
+          .toLowerCase()}: ${searchData[j][el]
+          .substring(0, 1)
+          .toUpperCase()}${searchData[j][el].substring(1).toLowerCase()}`;
+        ul.appendChild(li);
+        li_clone = li.cloneNode(true);
+      });
+      container.appendChild(acc);
+      container.appendChild(box);
+      box.appendChild(spanEx);
+      box.appendChild(ul);
+    }
+  } catch (error) {
+    message.textContent =
+      "No exercises in this parameter. Try other combinations.";
+    message.style.textAlign = "center";
+    container.appendChild(message);
+    console.log(error);
   }
+}
+
+// Img of muscle grp
+function muscleGroupImg(container) {
+  let imgCon = document.createElement("div");
+  imgCon.className = "imgCon";
+  let img = document.createElement("img");
+  img.src = "./muscles.jpg";
+  imgCon.appendChild(img);
+  container.appendChild(imgCon);
+}
+
+// Youtube API
+async function getVid(keyword, ul_clone) {
+  const url = "https://youtube-search.p.rapidapi.com/search?key=myKey&";
+
+  const response = await fetch(
+    url +
+      new URLSearchParams({
+        part: ["snippet"],
+        maxResults: 1,
+        order: "relevance",
+        topicId: "/m/027x7n",
+        regionCode: "US",
+        q: `how to do ${keyword}`,
+        safeSearch: "moderate",
+        type: ["video"],
+        videoEmbeddable: "true",
+      }),
+    {
+      headers: {
+        "X-RapidAPI-Key": "81b7b379e6msh2104c760c387f06p1b2c07jsnb2b4274400e6",
+        "X-RapidAPI-Host": "youtube-search.p.rapidapi.com",
+      },
+    }
+  );
+  const result = await response.json();
+  let data = result.items[0].id.videoId;
+
+  let embedURL = `https://www.youtube.com/embed/${data}`;
+  let video = document.createElement("iframe");
+  video.style.width = "250px";
+  video.style.height = "auto";
+  video.setAttribute("controls", "");
+  video.setAttribute("src", embedURL);
+  video.setAttribute("allowfullscreen", "");
+  video.setAttribute(
+    "allow",
+    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  );
+  video.setAttribute("frameborder", "0");
+  video.className = "video";
+  ul_clone.appendChild(video);
 }
 
 /* 
 1. error in chrome extension
 2. make keys bold in box and expandedBox
-3. expanded box animation on opening and closing
 */
+
+// let num = 0;
+// numAddBtn.textContent = "Next Page";
+// topRightContainer.appendChild(numAddBtn);
+// numAddBtn.addEventListener("click", function () {
+//   num += 1;
+//   container.innerHTML = "";
+//   message.innerHTML = "";
+//   callAPI(muscle, type, diff, name, num);
+// });
+
+// Youtube loadClient
+
+// part: ["snippet"],
+// maxResults: 1,
+// order: "relevance",
+// topicId: "/m/027x7n",
+// q: `how to do ${keyword}`,
+// safeSearch: "moderate",
+// type: ["video"],
+// videoEmbeddable: "true",
+
+// let url = `https://www.youtube.com/embed/${data}`;
+// let video = document.createElement("iframe");
+// video.style.width = "250px";
+// video.style.height = "auto";
+// video.setAttribute("controls", "");
+// video.setAttribute("src", url);
+// video.setAttribute("allowfullscreen", "");
+// video.setAttribute(
+//   "allow",
+//   "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+// );
+// video.setAttribute("frameborder", "0");
+// video.className = "video";
+// ul_clone.appendChild(video);
