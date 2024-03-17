@@ -251,7 +251,8 @@ function exerciseAPI() {
       }
     });
   }
-  let numAddBtn = document.createElement("button");
+
+  // let numAddBtn = document.createElement("button");
 
   // gapi.load("client", searching);
   searching();
@@ -275,14 +276,14 @@ function exerciseAPI() {
       const name = document.getElementById("name").value;
 
       let num = 0;
-      numAddBtn.textContent = "Next Page";
-      topRightContainer.appendChild(numAddBtn);
-      numAddBtn.addEventListener("click", function () {
-        num += 1;
-        container.innerHTML = "";
-        message.innerHTML = "";
-        callAPI(muscle, type, diff, name, num);
-      });
+      // numAddBtn.textContent = "Next Page";
+      // topRightContainer.appendChild(numAddBtn);
+      // numAddBtn.addEventListener("click", function () {
+      //   num += 1;
+      //   container.innerHTML = "";
+      //   message.innerHTML = "";
+      //   callAPI(muscle, type, diff, name, num);
+      // });
 
       callAPI();
 
@@ -292,7 +293,7 @@ function exerciseAPI() {
             `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}&name=${name}&offset=${num}`,
             {
               headers: {
-                "X-Api-Key": "myKey",
+                "X-Api-Key": "key",
               }, // put ur key
             }
           );
@@ -476,4 +477,5 @@ function exerciseAPI() {
 /* 
 1. error in chrome extension
 2. make keys bold in box and expandedBox
+3. expanded box animation on opening and closing
 */

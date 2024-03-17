@@ -6,10 +6,14 @@
     <!-- <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self' 'unsafe-hashes'; child-src 'self' https://www.youtube.com/*; 
-      style-src-elem 'self' 'unsafe-inline' https://cdnjs.cloudflare.com/*; font-src https://fonts.googleapis.com/*; 
-      script-src-elem 'self' https://apis.google.com/*; connect-src 'self' https://api.api-ninjas.com/v1/exercises*"
+      style-src-elem 'self' 'unsafe-inline' https://cdnjs.cloudflare.com/*; style-src 'self' https://fonts.googleapis.com; 
+      font-src fonts.gstatic.com; script-src-elem 'self' https://apis.google.com/*; 
+      connect-src 'self' https://api.api-ninjas.com/v1/exercises*"
     /> -->
-
+    <!-- <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src https://apis.google.com/"
+    /> -->
     <title>Health</title>
     <link rel="stylesheet" href="./style.css" />
     <link
@@ -18,7 +22,7 @@
     />
   </head>
   <body>
-    <script src="https://apis.google.com/js/api.js"></script>
+    <!-- <script src="https://apis.google.com/js/api.js"></script> -->
     <script src="./main.js"></script>
   </body>
 </html>
