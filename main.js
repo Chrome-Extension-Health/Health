@@ -36,8 +36,26 @@ function landingPage() {
   toExercise.appendChild(arrowIcon);
   landingPage.appendChild(toExercise);
 
-  toExercise.addEventListener("click", exerciseAPI);
+  toExercise.addEventListener("mouseover", function () {
+    arrowIcon.style.color = lightest;
+  });
 
+  toExercise.addEventListener("mouseout", function () {
+    arrowIcon.style.color = secondLightest;
+  });
+
+  toExercise.addEventListener("click", function () {
+    for (let i = 1; i >= 0; i--) {
+      title.style.opacity = i;
+      toExercise.style.opacity = i;
+    }
+    setTimeout(function () {
+      bodyContainer.style.backgroundColor = lightest;
+    }, 100);
+    setTimeout(function () {
+      exerciseAPI();
+    }, 300);
+  });
   // Background video on loop
   // let backgroundVid = document.createElement("video");
   // backgroundVid.className = "backgroundVid";
@@ -289,7 +307,7 @@ async function callAPI(muscle, type, diff, name, message, container) {
       `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}&name=${name}`,
       {
         headers: {
-          "X-Api-Key": "mykey",
+          "X-Api-Key": "0oGCbeeMDI0L/uSShUHQtA==MMLsf0Lc6nYFiSsn",
         }, // put ur key
       }
     );
@@ -420,7 +438,8 @@ function muscleGroupImg(container) {
 
 // Youtube API
 async function getVid(keyword, ul_clone) {
-  const url = "https://youtube-search.p.rapidapi.com/search?key=myKey&";
+  const url =
+    "https://youtube-search.p.rapidapi.com/search?key=AIzaSyDqNLOQHnWw49D-TNJGqVghSG7nBk1CNI0&";
 
   const response = await fetch(
     url +
@@ -501,3 +520,6 @@ async function getVid(keyword, ul_clone) {
 // video.setAttribute("frameborder", "0");
 // video.className = "video";
 // ul_clone.appendChild(video);
+
+// 1. keywords need to be bold
+// 2. can animate when clicking on button in landing page
