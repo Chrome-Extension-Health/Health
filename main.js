@@ -21,6 +21,7 @@ function landingPage() {
   bodyContainer.style.backgroundColor = "#abd0d9";
   let landingPage = document.createElement("div");
   landingPage.className = "landingPage";
+  bodyContainer.style.overflowX = "hidden";
   bodyContainer.appendChild(landingPage);
 
   let title = document.createElement("h1");
@@ -44,11 +45,14 @@ function landingPage() {
     arrowIcon.style.color = secondLightest;
   });
 
-  toExercise.addEventListener("click", function () {
-    for (let i = 1; i >= 0; i--) {
+  toExercise.addEventListener("click", function (e) {
+    let i = 1;
+    while (i >= 0) {
       title.style.opacity = i;
       toExercise.style.opacity = i;
+      i -= 0.01;
     }
+    toExercise.style.animation = "toRight 0.3s linear";
     setTimeout(function () {
       bodyContainer.style.backgroundColor = lightest;
     }, 100);
@@ -56,20 +60,12 @@ function landingPage() {
       exerciseAPI();
     }, 300);
   });
-  // Background video on loop
-  // let backgroundVid = document.createElement("video");
-  // backgroundVid.className = "backgroundVid";
-  // backgroundVid.autoplay = true;
-  // backgroundVid.muted = true;
-  // backgroundVid.loop = true;
-  // backgroundVid.src = "./waves.mp4";
-  // backgroundVid.type = "video/mp4";
-  // landingPage.appendChild(backgroundVid);
 }
 
 function exerciseAPI() {
   bodyContainer.innerHTML = "";
   bodyContainer.style.backgroundColor = lightest;
+  bodyContainer.style.overflowX = "visible";
 
   // top-container
   let topContainer = document.createElement("div");
