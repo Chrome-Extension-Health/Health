@@ -22,6 +22,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  transition: background-color 0.3s linear;
 }
 
 /* =============== Landing Page =============== */
@@ -39,17 +40,16 @@
   margin-top: 10px;
   color: var(--middle);
   text-align: center;
-  text-shadow: 3px -3px 1px black;
-  /* animation: blur 3s infinite ease-in-out; */
+  text-shadow: 3px 0px 1px black;
 }
 
-@keyframes blur {
-  0% {
-    filter: blur(0px);
-  }
-  50% {
-    filter: blur(1px);
-  }
+.btnContainer {
+  width: 100%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .toExercise {
@@ -70,10 +70,36 @@
   animation: upAndDown infinite 1.5s linear;
 }
 
+.toNutrition {
+  background-color: #fce6cc;
+  border: none;
+  border-radius: 40px;
+  height: 70px;
+  width: 150px;
+  color: orange;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  animation: upAndDown infinite 1.5s linear;
+}
+
 .arrowIcon {
   color: var(--secondLightest);
   margin-left: 5px;
   font-size: 16px;
+  transition: all 0.2s linear;
+}
+
+.arrowIcon2 {
+  color: orange;
+  margin-left: 5px;
+  font-size: 16px;
+  transition: all 0.2s linear;
 }
 
 .toExercise:hover {
@@ -81,6 +107,22 @@
   background-color: var(--secondDarkest);
   color: var(--lightest);
   border: 2px solid var(--secondLightest);
+}
+
+.toNutrition:hover {
+  box-shadow: 0px 0px 10px orange;
+  background-color: #d85204;
+  color: #ebf5df;
+  border: 2px solid orange;
+}
+
+@keyframes toRight {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(180px);
+  }
 }
 
 @keyframes upAndDown {
@@ -98,30 +140,20 @@
   }
 }
 
-/* .backgroundVid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 400px;
-  height: 500px;
-  z-index: -1;
-  object-fit: cover;
-  animation: blur 3s infinite ease-in-out;
-} */
-
 /* =============== Exercise Page =============== */
 
 /* ===== Inputs & Buttons ===== */
-
 .topContainer {
   margin-top: 10px;
   width: 100%;
+  height: 132px;
   display: flex;
   flex-direction: row;
 }
 
 .topLeftContainer {
   width: 60%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -130,7 +162,7 @@
 
 .topLeftContainer input {
   width: 200px;
-  margin-bottom: 8px;
+  margin: 4px 0;
   height: 25px;
   padding-left: 5px;
   border: 1px solid black;
@@ -191,7 +223,7 @@ input[type="search"] {
   font-size: 22px;
 }
 
-.fa-beat {
+.search .fa-beat {
   font-size: 20px;
 }
 
@@ -206,23 +238,38 @@ input[type="search"] {
 
 /* ===== Container ===== */
 
-.imgCon {
+.imgBtnCon {
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 10px 0;
 }
 
-.imgCon img {
+.showIcon {
+  cursor: pointer;
+  font-size: 14px;
+  color: grey;
+  transition: color 0.4s ease-in-out;
+}
+
+.hideIcon {
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 15px;
+  transition: color 0.4s ease-in-out;
+}
+
+.muscleImg {
   width: 85%;
   height: auto;
+  margin: 5px auto;
 }
 
 .container {
   width: 100%;
   height: 100%;
-  margin: 10px 0;
+  margin: 5px 0;
   overflow: auto;
   scrollbar-color: var(--secondDarkest) var(--darkest);
   scrollbar-width: thin;
@@ -242,10 +289,16 @@ ul {
   padding: 10px;
 }
 
+.listItems::first-letter {
+  font-weight: 600;
+  font-size: 15px;
+}
+
 .listItems {
   list-style-type: none;
   font-size: 14px;
   color: black;
+  margin-bottom: 5px;
 }
 
 .spanEx {
@@ -256,6 +309,7 @@ ul {
 .expandIcon {
   cursor: pointer;
   position: absolute;
+  font-size: 16px;
   top: 10px;
   left: 310px;
 }
@@ -282,7 +336,7 @@ ul {
   color: var(--secondDarkest);
   top: 0;
   left: 0;
-  transform: translate3d(140px, 354px, 0);
+  transform: translate3d(140px, 352px, 0);
 }
 
 .closeIcon {
@@ -292,7 +346,7 @@ ul {
 }
 
 .closeIcon:hover {
-  color: var(--lightest);
+  color: white;
   background-color: var(--darkest);
   box-shadow: 5px 0px var(--darkest);
   border: 2px var(--darkest) solid;
@@ -305,13 +359,36 @@ ul {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background-color: #8fbcc5;
+  background-color: rgb(156, 228, 216);
+  background: linear-gradient(
+    180deg,
+    rgba(98, 177, 125, 1) 0%,
+    rgba(98, 177, 158, 1) 30%,
+    rgba(98, 163, 177, 1) 80%
+  );
   border-radius: 5px;
-  box-shadow: 10px -10px 0px 0px #9fc6ce, 20px -20px 0px 0px #b0d0d6;
   border-radius: 50px 15px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .expandedBoxContainer {
@@ -361,4 +438,161 @@ ul {
   height: auto;
   display: block;
   margin: 10px auto;
+}
+
+/* =============== Nutrition Page =============== */
+
+.topContainerNu {
+  width: 100%;
+  height: 132px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputContainer {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputContainer input {
+  width: 200px;
+  margin-bottom: 8px;
+  height: 25px;
+  padding-left: 5px;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+.optionsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.rightInputContainer {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#age-select {
+  margin-right: 5px;
+  width: fit-content;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding-left: 5px;
+}
+
+#sex-select {
+  width: fit-content;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding-left: 5px;
+}
+
+#submitButton {
+  width: 80px;
+  height: 50px;
+  border: none;
+  border-radius: 3px;
+  background-color: #ff8800;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+}
+
+.searchIconNu {
+  font-size: 22px;
+}
+
+#submitButton .fa-beat {
+  font-size: 20px;
+}
+
+#submitButton:hover {
+  transform: scale(1.05, 1.05);
+  border: solid 2px #ff8800;
+  background-color: #fce6cc;
+  color: #ff8800;
+  box-shadow: 10px -6px 0px #ff8800;
+  transform: translate(-5px, 3px);
+}
+
+.backToMenuBtnNu {
+  width: 80px;
+  height: 50px;
+  border: none;
+  border-radius: 3px;
+  background-color: #ff8800;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.menuIconNu {
+  font-size: 22px;
+}
+
+.backToMenuBtnNu:hover {
+  transform: scale(1.05, 1.05);
+  border: solid 2px #ff8800;
+  background-color: #fce6cc;
+  color: #ff8800;
+  box-shadow: 10px -6px 0px #ff8800;
+  transform: translate(-5px, 3px);
+}
+
+/* ===== Inside Result Container ===== */
+
+#result-container {
+  width: 100%;
+  height: 300px;
+  overflow: auto;
+  scrollbar-color: #ff8800 #e2b27a;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#result-container ul {
+  background-color: orange;
+  margin: 10px 0;
+  border-radius: 12px;
+  width: 85%;
+  height: fit-content;
+  transition: all 0.35s ease-in-out;
+}
+
+#result-container ul:hover {
+  background-color: #ff8800;
+  width: 90%;
+}
+
+#result-container ul li {
+  list-style-type: none;
+  padding: 0 10px;
+  transition: all 0.2s ease-in-out;
+  font-size: 15px;
+}
+
+#result-container ul li:hover {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
 }
