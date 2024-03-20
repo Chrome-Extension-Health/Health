@@ -22,6 +22,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  transition: background-color 0.3s linear;
 }
 
 /* =============== Landing Page =============== */
@@ -39,20 +40,28 @@
   margin-top: 10px;
   color: var(--middle);
   text-align: center;
-  text-shadow: 3px -3px 1px black;
-  /* animation: blur 3s infinite ease-in-out; */
-}
-
-@keyframes blur {
-  0% {
-    filter: blur(0px);
-  }
-  50% {
-    filter: blur(1px);
-  }
+  text-shadow: 3px 0px 1px black;
 }
 
 .toExercise {
+  background-color: var(--lightest);
+  border: none;
+  border-radius: 40px;
+  height: 70px;
+  width: 150px;
+  color: var(--secondLightest);
+  font-weight: bold;
+  padding: 10px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  animation: upAndDown infinite 1.5s linear;
+}
+
+.toNutrition {
   background-color: var(--lightest);
   border: none;
   border-radius: 40px;
@@ -74,6 +83,7 @@
   color: var(--secondLightest);
   margin-left: 5px;
   font-size: 16px;
+  transition: all 0.2s linear;
 }
 
 .toExercise:hover {
@@ -81,6 +91,22 @@
   background-color: var(--secondDarkest);
   color: var(--lightest);
   border: 2px solid var(--secondLightest);
+}
+
+.toNutrition:hover {
+  box-shadow: 0px 0px 10px orange;
+  background-color: #d85204;
+  color: #ebf5df;
+  border: 2px solid orange;
+}
+
+@keyframes toRight {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(180px);
+  }
 }
 
 @keyframes upAndDown {
@@ -98,21 +124,9 @@
   }
 }
 
-/* .backgroundVid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 400px;
-  height: 500px;
-  z-index: -1;
-  object-fit: cover;
-  animation: blur 3s infinite ease-in-out;
-} */
-
 /* =============== Exercise Page =============== */
 
 /* ===== Inputs & Buttons ===== */
-
 .topContainer {
   margin-top: 10px;
   width: 100%;
@@ -191,7 +205,7 @@ input[type="search"] {
   font-size: 22px;
 }
 
-.fa-beat {
+.search .fa-beat {
   font-size: 20px;
 }
 
@@ -240,6 +254,11 @@ input[type="search"] {
 
 ul {
   padding: 10px;
+}
+
+.listItems li::first-letter {
+  font-weight: bold;
+  font-size: 15px;
 }
 
 .listItems {
@@ -314,6 +333,24 @@ ul {
   align-items: center;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .expandedBoxContainer {
   width: 300px;
   height: 300px;
@@ -361,4 +398,161 @@ ul {
   height: auto;
   display: block;
   margin: 10px auto;
+}
+
+/* =============== Nutrition Page =============== */
+
+.topContainerNu {
+  width: 100%;
+  height: 132px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputContainer {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputContainer input {
+  width: 200px;
+  margin-bottom: 8px;
+  height: 25px;
+  padding-left: 5px;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+.optionsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.rightInputContainer {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#age-select {
+  margin-right: 5px;
+  width: fit-content;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding-left: 5px;
+}
+
+#sex-select {
+  width: fit-content;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding-left: 5px;
+}
+
+#submitButton {
+  width: 80px;
+  height: 50px;
+  border: none;
+  border-radius: 3px;
+  background-color: #ff8800;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+}
+
+.searchIconNu {
+  font-size: 22px;
+}
+
+#submitButton .fa-beat {
+  font-size: 20px;
+}
+
+#submitButton:hover {
+  transform: scale(1.05, 1.05);
+  border: solid 2px #ff8800;
+  background-color: #fce6cc;
+  color: #ff8800;
+  box-shadow: 10px -6px 0px #ff8800;
+  transform: translate(-5px, 3px);
+}
+
+.backToMenuBtnNu {
+  width: 80px;
+  height: 50px;
+  border: none;
+  border-radius: 3px;
+  background-color: #ff8800;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.menuIconNu {
+  font-size: 22px;
+}
+
+.backToMenuBtnNu:hover {
+  transform: scale(1.05, 1.05);
+  border: solid 2px #ff8800;
+  background-color: #fce6cc;
+  color: #ff8800;
+  box-shadow: 10px -6px 0px #ff8800;
+  transform: translate(-5px, 3px);
+}
+
+/* ===== Inside Result Container ===== */
+
+#result-container {
+  width: 100%;
+  height: 300px;
+  overflow: auto;
+  scrollbar-color: #ff8800 #e2b27a;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#result-container ul {
+  background-color: orange;
+  margin: 10px 0;
+  border-radius: 12px;
+  width: 85%;
+  height: fit-content;
+  transition: all 0.35s ease-in-out;
+}
+
+#result-container ul:hover {
+  background-color: #ff8800;
+  width: 90%;
+}
+
+#result-container ul li {
+  list-style-type: none;
+  padding: 0 10px;
+  transition: all 0.2s ease-in-out;
+  font-size: 15px;
+}
+
+#result-container ul li:hover {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
 }
