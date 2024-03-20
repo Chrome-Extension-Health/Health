@@ -239,9 +239,9 @@ input[type="search"] {
 /* ===== Container ===== */
 
 .imgBtnCon {
-  width: 100%;
+  width: 90%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   margin: 10px 0;
 }
@@ -249,15 +249,13 @@ input[type="search"] {
 .showIcon {
   cursor: pointer;
   font-size: 14px;
-  color: grey;
-  transition: color 0.4s ease-in-out;
+  color: var(--darkest);
 }
 
 .hideIcon {
   cursor: pointer;
   font-size: 14px;
-  margin-left: 15px;
-  transition: color 0.4s ease-in-out;
+  color: grey;
 }
 
 .muscleImg {

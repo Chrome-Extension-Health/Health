@@ -473,29 +473,32 @@ function muscleGroupImg(container) {
   // show img
   let showIcon = document.createElement("i");
   showIcon.classList.add("fa-solid", "fa-eye", "showIcon");
-  showIcon.textContent = "Image";
   imgBtnCon.appendChild(showIcon);
 
   // hide img
   let hideIcon = document.createElement("i");
   hideIcon.classList.add("fa-solid", "fa-eye-slash", "hideIcon");
-  hideIcon.textContent = "Image";
+  hideIcon.style.display = "none";
   imgBtnCon.appendChild(hideIcon);
 
-  // show and hide img on click
+  // img
   let muscleImg = document.createElement("img");
+  muscleImg.className = "muscleImg";
+  muscleImg.src = "./muscles.jpg";
+  bodyContainer.insertBefore(muscleImg, container);
+
+  // show and hide img on click
   showIcon.addEventListener("click", function () {
-    muscleImg.style.display = "block";
-    muscleImg.className = "muscleImg";
-    muscleImg.src = "./muscles.jpg";
-    showIcon.style.color = darkest;
-    hideIcon.style.color = "grey";
-    bodyContainer.insertBefore(muscleImg, container);
+    muscleImg.style.display = "none";
+
+    showIcon.style.display = "none";
+    hideIcon.style.display = "block";
 
     hideIcon.addEventListener("click", function () {
-      showIcon.style.color = "grey";
-      hideIcon.style.color = darkest;
-      muscleImg.style.display = "none";
+      muscleImg.style.display = "block";
+
+      showIcon.style.display = "block";
+      hideIcon.style.display = "none";
     });
   });
 }
