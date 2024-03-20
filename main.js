@@ -32,17 +32,17 @@ function landingPage() {
   let toExercise = document.createElement("button");
   toExercise.className = "toExercise";
   toExercise.textContent = "Exercises";
-  let arrowIcon = document.createElement("i");
-  arrowIcon.classList.add("fa-solid", "fa-angle-right", "arrowIcon");
-  toExercise.appendChild(arrowIcon);
+  let arrowIcon1 = document.createElement("i");
+  arrowIcon1.classList.add("fa-solid", "fa-angle-right", "arrowIcon");
+  toExercise.appendChild(arrowIcon1);
   landingPage.appendChild(toExercise);
 
   toExercise.addEventListener("mouseover", function () {
-    arrowIcon.style.color = lightest;
+    arrowIcon1.style.color = lightest;
   });
 
   toExercise.addEventListener("mouseout", function () {
-    arrowIcon.style.color = secondLightest;
+    arrowIcon1.style.color = secondLightest;
   });
 
   toExercise.addEventListener("click", function (e) {
@@ -50,14 +50,50 @@ function landingPage() {
     while (i >= 0) {
       title.style.opacity = i;
       toExercise.style.opacity = i;
+      toNutrition.style.opacity = i;
       i -= 0.01;
     }
     toExercise.style.animation = "toRight 0.3s linear";
+    toNutrition.style.animation = "toRight 0.3s linear";
     setTimeout(function () {
       bodyContainer.style.backgroundColor = lightest;
     }, 100);
     setTimeout(function () {
       exerciseAPI();
+    }, 300);
+  });
+
+  let toNutrition = document.createElement("button");
+  toNutrition.className = "toNutrition";
+  toNutrition.textContent = "Nutrition";
+  let arrowIcon2 = document.createElement("i");
+  arrowIcon2.classList.add("fa-solid", "fa-angle-right", "arrowIcon");
+  toNutrition.appendChild(arrowIcon2);
+  landingPage.appendChild(toNutrition);
+
+  toNutrition.addEventListener("mouseover", function () {
+    arrowIcon2.style.color = "#ebf5df";
+  });
+
+  toNutrition.addEventListener("mouseout", function () {
+    arrowIcon2.style.color = secondLightest;
+  });
+
+  toNutrition.addEventListener("click", function (e) {
+    let i = 1;
+    while (i >= 0) {
+      title.style.opacity = i;
+      toExercise.style.opacity = i;
+      toNutrition.style.opacity = i;
+      i -= 0.01;
+    }
+    toExercise.style.animation = "toRight 0.3s linear";
+    toNutrition.style.animation = "toRight 0.3s linear";
+    setTimeout(function () {
+      bodyContainer.style.backgroundColor = lightest;
+    }, 100);
+    setTimeout(function () {
+      nutritionHTML();
     }, 300);
   });
 }
@@ -267,9 +303,6 @@ function exerciseAPI() {
     });
   }
 
-  // let numAddBtn = document.createElement("button");
-
-  // gapi.load("client", searching);
   searching();
 
   function searching() {
@@ -518,4 +551,286 @@ async function getVid(keyword, ul_clone) {
 // ul_clone.appendChild(video);
 
 // 1. keywords need to be bold
-// 2. can animate when clicking on button in landing page
+//    >> got the first letter to be bold instead
+
+// ========== Nutrition ==========
+
+const nutritionAPI = "https://api.api-ninjas.com/v1/nutrition?query=";
+const dailyIntake = [
+  { group: "young male", age: "18-29", sex: "male", calories: 1950 },
+  { group: "adult male", age: "30-59", sex: "male", calories: 2350 },
+  { group: "elder male", age: ">=60", sex: "male", calories: 2400 },
+  { group: "young female", age: "18-29", sex: "female", calories: 1700 },
+  { group: "adult female", age: "30-59", sex: "female", calories: 1850 },
+  { group: "elder female", age: ">=60", sex: "female", calories: 1900 },
+];
+let selectedCalories = 0;
+
+function nutritionHTML() {
+  bodyContainer.innerHTML = "";
+  bodyContainer.style.overflowX = "auto";
+  bodyContainer.style.backgroundColor = "#fce6cc";
+
+  // container for input, searchBtn and options
+  let topContainerNu = document.createElement("div");
+  topContainerNu.className = "topContainerNu";
+  bodyContainer.appendChild(topContainerNu);
+
+  // input container in topContainerNu
+  let inputContainer = document.createElement("div");
+  inputContainer.className = "inputContainer";
+  topContainerNu.appendChild(inputContainer);
+
+  // options container for input element
+  let optionsContainer = document.createElement("div");
+  optionsContainer.className = "optionsContainer";
+  inputContainer.appendChild(optionsContainer);
+
+  // right container in inputContainer
+  let rightInputContainer = document.createElement("div");
+  rightInputContainer.className = "rightInputContainer";
+  topContainerNu.appendChild(rightInputContainer);
+
+  // input
+  let searchInput = document.createElement("input");
+  searchInput.setAttribute("type", "search");
+  searchInput.setAttribute("id", "searchInput");
+  searchInput.setAttribute("placeholder", "e.g. 1lb brisket 100g fries");
+  inputContainer.appendChild(searchInput);
+
+  // Button for going back to menu
+  backToMenuBtnNu = document.createElement("button");
+  backToMenuBtnNu.classList = "backToMenuBtnNu";
+  let menuIconNu = document.createElement("i");
+  menuIconNu.classList.add("fa-solid", "fa-house", "menuIconNu");
+  backToMenuBtnNu.appendChild(menuIconNu);
+  rightInputContainer.appendChild(backToMenuBtnNu);
+  backToMenuBtnNu.addEventListener("click", landingPage);
+
+  // button
+  let createSubmitButton = document.createElement("button");
+  createSubmitButton.setAttribute("id", "submitButton");
+  let searchIconNu = document.createElement("i");
+  searchIconNu.classList.add("fa-solid", "fa-magnifying-glass", "searchIconNu");
+  createSubmitButton.appendChild(searchIconNu);
+  rightInputContainer.appendChild(createSubmitButton);
+
+  createSubmitButton.addEventListener("mouseover", function () {
+    searchIconNu.classList.add("fa-beat");
+  });
+  createSubmitButton.addEventListener("mouseout", function () {
+    searchIconNu.classList.remove("fa-beat");
+  });
+
+  // age-select
+  let age = document.createElement("select");
+  age.setAttribute("name", "age");
+  age.setAttribute("id", "age-select");
+  optionsContainer.appendChild(age);
+
+  let ageOption1 = document.createElement("option");
+  ageOption1.setAttribute("value", " ");
+  ageOption1.textContent = "--Age--";
+  age.appendChild(ageOption1);
+
+  let ageOption2 = document.createElement("option");
+  ageOption2.setAttribute("value", "18-29");
+  ageOption2.textContent = "18-29";
+  age.appendChild(ageOption2);
+
+  let ageOption3 = document.createElement("option");
+  ageOption3.setAttribute("value", "30-59");
+  ageOption3.textContent = "30-59";
+  age.appendChild(ageOption3);
+
+  let ageOption4 = document.createElement("option");
+  ageOption4.setAttribute("value", ">=60");
+  ageOption4.textContent = ">=60";
+  age.appendChild(ageOption4);
+
+  // sex-select
+  let sex = document.createElement("select");
+  sex.setAttribute("name", "sex");
+  sex.setAttribute("id", "sex-select");
+  optionsContainer.appendChild(sex);
+
+  let sexOption1 = document.createElement("option");
+  sexOption1.setAttribute("value", " ");
+  sexOption1.textContent = "--Sex--";
+  sex.appendChild(sexOption1);
+
+  let sexOption2 = document.createElement("option");
+  sexOption2.setAttribute("value", "male");
+  sexOption2.textContent = "Male";
+  sex.appendChild(sexOption2);
+
+  let sexOption3 = document.createElement("option");
+  sexOption3.setAttribute("value", "female");
+  sexOption3.textContent = "Female";
+  sex.appendChild(sexOption3);
+
+  // result container
+  let resultContainer = document.createElement("div");
+  resultContainer.setAttribute("id", "result-container");
+  bodyContainer.appendChild(resultContainer);
+
+  // error
+  let error = document.createElement("error");
+  error.setAttribute("id", "error");
+  bodyContainer.appendChild(error);
+
+  const submitButton = document.getElementById("submitButton");
+  submitButton.addEventListener("click", async function () {
+    const resultContainer = document.getElementById("result-container");
+
+    resultContainer.innerHTML = ""; // clear
+    hideError();
+    const searchInput = document.getElementById("searchInput"); // get input
+    const searching = searchInput.value.trim();
+    searchInput.value = searching;
+    const regex = new RegExp(/^[a-zA-Z0-9 ]*$/);
+    regex.test(searching)
+      ? await fetchNutritionAPI(searching)
+      : showError("Please input correctly.");
+  });
+}
+
+async function fetchNutritionAPI(input) {
+  const resultContainer = document.getElementById("result-container");
+  const ageSelect = document.getElementById("age-select").value;
+  const sexSelect = document.getElementById("sex-select").value;
+
+  for (let i = 0; i < dailyIntake.length; i++) {
+    ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex // still need code to block empty inputs
+      ? (selectedCalories = dailyIntake[i].calories)
+      : showError("Please select the corresponding age or sex.");
+  }
+  let totalfatMinLimit = selectedCalories * 0.2;
+  let totalfatMaxLimit = selectedCalories * 0.35;
+  let saturatedfatMaxLimit = selectedCalories * 0.1;
+  let proteinMinLimit = selectedCalories * 0.1;
+  let proteinMaxLimit = selectedCalories * 0.15;
+  let sodiumMaxLimit = 2000;
+  let potassiumMinLimit = 2700;
+  let potassiumMaxLimit = 3100;
+  let carbohydrateMinLimit = selectedCalories * 0.55;
+  let carbohydrateMaxLimit = selectedCalories * 0.75;
+  let fiberMinLimit = 25;
+  let sugarMaxLimit = selectedCalories * 0.1;
+  const response = await fetch(nutritionAPI + input, {
+    headers: { "X-Api-Key": "fSlNftfk2M+xcXCj+72fPg==LtbIt40Y0yAjeaJ4" },
+  });
+  const result = await response.json();
+  if (result) {
+    for (let i = 0; i < result.length; i++) {
+      const nutritionList = document.createElement("ul");
+      for (const [key, value] of Object.entries(result[i])) {
+        const li = document.createElement("li");
+        // write IF for every key
+        if (key === "cholesterol_mg") {
+          continue;
+        }
+        key === "name"
+          ? (li.textContent = `Name: ${value}`)
+          : key === "calories"
+          ? (li.textContent = `Calories: ${value}kcal ${(
+              value / selectedCalories
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "serving_size_g"
+          ? (li.textContent = `Serving size: ${value}g`)
+          : key === "fat_total_g"
+          ? (li.textContent = `Total fat: ${value}g ${(
+              value / totalfatMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}-${(value / totalfatMinLimit).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "fat_saturated_g"
+          ? (li.textContent = `Saturated fat: ${value}g ${(
+              value / saturatedfatMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "protein_g"
+          ? (li.textContent = `Protein: ${value}g ${(
+              value / proteinMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}-${(value / proteinMinLimit).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "sodium_mg"
+          ? (li.textContent = `Sodium: ${value}mg ${(
+              value / sodiumMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "potassium_mg"
+          ? (li.textContent = `Potassium: ${value}mg ${(
+              value / potassiumMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}-${(value / potassiumMinLimit).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "carbohydrates_total_g"
+          ? (li.textContent = `Total carbohydrates: ${value}g ${(
+              value / carbohydrateMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}-${(value / carbohydrateMinLimit).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "fiber_g"
+          ? (li.textContent = `Fiber: ${value}g ${(
+              value / fiberMinLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : key === "sugar_g"
+          ? (li.textContent = `Sugar: ${value}g ${(
+              value / sugarMaxLimit
+            ).toLocaleString("en", {
+              style: "percent",
+              minimumFractionDigits: 1,
+            })}`)
+          : null;
+        if (value == 0) {
+          continue;
+        }
+        if (li.textContent !== "") {
+          nutritionList.appendChild(li);
+        }
+      }
+      resultContainer.appendChild(nutritionList);
+    }
+  } else {
+    return Promise.reject("result not found.");
+  }
+}
+
+function showError(err) {
+  const error = document.getElementById("error");
+  error.textContent = err;
+  error.style.display = "block";
+}
+function hideError() {
+  const error = document.getElementById("error");
+  error.textContent = " ";
+  error.style.display = "none";
+}
