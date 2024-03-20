@@ -24,18 +24,25 @@ function landingPage() {
   bodyContainer.style.overflowX = "hidden";
   bodyContainer.appendChild(landingPage);
 
+  // Title
   let title = document.createElement("h1");
   title.className = "title";
   title.textContent = "FitFusion";
   landingPage.appendChild(title);
 
+  // Button Container
+  let btnContainer = document.createElement("div");
+  btnContainer.className = "btnContainer";
+  landingPage.appendChild(btnContainer);
+
+  // Button To Exercise Page
   let toExercise = document.createElement("button");
   toExercise.className = "toExercise";
   toExercise.textContent = "Exercises";
   let arrowIcon1 = document.createElement("i");
   arrowIcon1.classList.add("fa-solid", "fa-angle-right", "arrowIcon");
   toExercise.appendChild(arrowIcon1);
-  landingPage.appendChild(toExercise);
+  btnContainer.appendChild(toExercise);
 
   toExercise.addEventListener("mouseover", function () {
     arrowIcon1.style.color = lightest;
@@ -63,20 +70,21 @@ function landingPage() {
     }, 300);
   });
 
+  // Button To Nutrition Page
   let toNutrition = document.createElement("button");
   toNutrition.className = "toNutrition";
   toNutrition.textContent = "Nutrition";
   let arrowIcon2 = document.createElement("i");
-  arrowIcon2.classList.add("fa-solid", "fa-angle-right", "arrowIcon");
+  arrowIcon2.classList.add("fa-solid", "fa-angle-right", "arrowIcon2");
   toNutrition.appendChild(arrowIcon2);
-  landingPage.appendChild(toNutrition);
+  btnContainer.appendChild(toNutrition);
 
   toNutrition.addEventListener("mouseover", function () {
     arrowIcon2.style.color = "#ebf5df";
   });
 
   toNutrition.addEventListener("mouseout", function () {
-    arrowIcon2.style.color = secondLightest;
+    arrowIcon2.style.color = "orange";
   });
 
   toNutrition.addEventListener("click", function (e) {
@@ -392,7 +400,7 @@ async function callAPI(muscle, type, diff, name, message, container) {
           instructionsListItem.remove();
         }
         if (!resultsLoaded) {
-          // getVid(keyword, ul_clone);
+          // getVid(keyword, ul_clone); // comment to not run API
           resultsLoaded = true;
           ul_clone.appendChild(li_clone);
           expandedBox.appendChild(spanCl);
@@ -457,12 +465,39 @@ async function callAPI(muscle, type, diff, name, message, container) {
 
 // Img of muscle grp
 function muscleGroupImg(container) {
-  let imgCon = document.createElement("div");
-  imgCon.className = "imgCon";
-  let img = document.createElement("img");
-  img.src = "./muscles.jpg";
-  imgCon.appendChild(img);
-  container.appendChild(imgCon);
+  //container for buttons
+  let imgBtnCon = document.createElement("div");
+  imgBtnCon.className = "imgBtnCon";
+  bodyContainer.insertBefore(imgBtnCon, container);
+
+  // show img
+  let showIcon = document.createElement("i");
+  showIcon.classList.add("fa-solid", "fa-eye", "showIcon");
+  showIcon.textContent = "Image";
+  imgBtnCon.appendChild(showIcon);
+
+  // hide img
+  let hideIcon = document.createElement("i");
+  hideIcon.classList.add("fa-solid", "fa-eye-slash", "hideIcon");
+  hideIcon.textContent = "Image";
+  imgBtnCon.appendChild(hideIcon);
+
+  // show and hide img on click
+  let muscleImg = document.createElement("img");
+  showIcon.addEventListener("click", function () {
+    muscleImg.style.display = "block";
+    muscleImg.className = "muscleImg";
+    muscleImg.src = "./muscles.jpg";
+    showIcon.style.color = darkest;
+    hideIcon.style.color = "grey";
+    bodyContainer.insertBefore(muscleImg, container);
+
+    hideIcon.addEventListener("click", function () {
+      showIcon.style.color = "grey";
+      hideIcon.style.color = darkest;
+      muscleImg.style.display = "none";
+    });
+  });
 }
 
 // Youtube API
@@ -508,50 +543,6 @@ async function getVid(keyword, ul_clone) {
   video.className = "video";
   ul_clone.appendChild(video);
 }
-
-/* 
-1. error in chrome extension
-2. make keys bold in box and expandedBox
-*/
-
-// let num = 0;
-// numAddBtn.textContent = "Next Page";
-// topRightContainer.appendChild(numAddBtn);
-// numAddBtn.addEventListener("click", function () {
-//   num += 1;
-//   container.innerHTML = "";
-//   message.innerHTML = "";
-//   callAPI(muscle, type, diff, name, num);
-// });
-
-// Youtube loadClient
-
-// part: ["snippet"],
-// maxResults: 1,
-// order: "relevance",
-// topicId: "/m/027x7n",
-// q: `how to do ${keyword}`,
-// safeSearch: "moderate",
-// type: ["video"],
-// videoEmbeddable: "true",
-
-// let url = `https://www.youtube.com/embed/${data}`;
-// let video = document.createElement("iframe");
-// video.style.width = "250px";
-// video.style.height = "auto";
-// video.setAttribute("controls", "");
-// video.setAttribute("src", url);
-// video.setAttribute("allowfullscreen", "");
-// video.setAttribute(
-//   "allow",
-//   "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-// );
-// video.setAttribute("frameborder", "0");
-// video.className = "video";
-// ul_clone.appendChild(video);
-
-// 1. keywords need to be bold
-//    >> got the first letter to be bold instead
 
 // ========== Nutrition ==========
 
@@ -607,7 +598,7 @@ function nutritionHTML() {
   rightInputContainer.appendChild(backToMenuBtnNu);
   backToMenuBtnNu.addEventListener("click", landingPage);
 
-  // button
+  // Search button
   let createSubmitButton = document.createElement("button");
   createSubmitButton.setAttribute("id", "submitButton");
   let searchIconNu = document.createElement("i");
@@ -692,6 +683,14 @@ function nutritionHTML() {
     regex.test(searching)
       ? await fetchNutritionAPI(searching)
       : showError("Please input correctly.");
+  });
+
+  // press enter to search
+  searchInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      createSubmitButton.click();
+    }
   });
 }
 
