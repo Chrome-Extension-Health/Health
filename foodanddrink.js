@@ -17,6 +17,7 @@ function nutritionHTML() {
   searchInput.setAttribute("type", "text");
   searchInput.setAttribute("id", "searchInput");
   searchInput.setAttribute("placeholder", "e.g. 1lb brisket 100g fries");
+  searchInput.required = true;
   bodyContainer.appendChild(searchInput);
   let createSubmitButton = document.createElement("button"); // button
   createSubmitButton.setAttribute("id", "submitButton");
@@ -69,26 +70,27 @@ nutritionHTML();
 const submitButton = document.getElementById("submitButton");
 submitButton.addEventListener("click", async function () {
   const resultContainer = document.getElementById("result-container");
-
   resultContainer.innerHTML = ""; // clear
   hideError();
+  const ageSelect = document.getElementById("age-select").value;
+  const sexSelect = document.getElementById("sex-select").value;
+  for (let i = 0; i < dailyIntake.length; i++) {
+    ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex
+      ? (selectedCalories = dailyIntake[i].calories)
+      : null;
+  }
   const searchInput = document.getElementById("searchInput"); // get input
   const searching = searchInput.value.trim();
   searchInput.value = searching;
   const regex = new RegExp(/^[a-zA-Z0-9 ]*$/);
-  regex.test(searching)
+  selectedCalories == 0
+    ? showError("Please select the corresponding age or sex.")
+    : regex.test(searching)
     ? await fetchNutritionAPI(searching)
     : showError("Please input correctly.");
 });
 async function fetchNutritionAPI(input) {
   const resultContainer = document.getElementById("result-container");
-  const ageSelect = document.getElementById("age-select").value;
-  const sexSelect = document.getElementById("sex-select").value;
-  for (let i = 0; i < dailyIntake.length; i++) {
-    ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex // still need code to block empty inputs, used for loop so error msg shown everytime
-      ? (selectedCalories = dailyIntake[i].calories)
-      : showError("Please select the corresponding age or sex.");
-  }
   let totalfatMinLimit = selectedCalories * 0.2;
   let totalfatMaxLimit = selectedCalories * 0.35;
   let saturatedfatMaxLimit = selectedCalories * 0.1;
