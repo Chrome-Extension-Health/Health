@@ -400,7 +400,7 @@ async function callAPI(muscle, type, diff, name, message, container) {
           instructionsListItem.remove();
         }
         if (!resultsLoaded) {
-          // getVid(keyword, ul_clone); // comment to not run API
+          getVid(keyword, ul_clone); // comment to not run API
           resultsLoaded = true;
           ul_clone.appendChild(li_clone);
           expandedBox.appendChild(spanCl);
@@ -681,7 +681,8 @@ function nutritionHTML() {
     hideError();
     const ageSelect = document.getElementById("age-select").value;
     const sexSelect = document.getElementById("sex-select").value;
-    for (let i = 0; i < dailyIntake.length; i++) { // get calories group
+    for (let i = 0; i < dailyIntake.length; i++) {
+      // get calories group
       ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex
         ? (selectedCalories = dailyIntake[i].calories)
         : null;

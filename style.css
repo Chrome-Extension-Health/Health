@@ -358,13 +358,7 @@ ul {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgb(156, 228, 216);
-  background: linear-gradient(
-    180deg,
-    rgba(98, 177, 125, 1) 0%,
-    rgba(98, 177, 158, 1) 30%,
-    rgba(98, 163, 177, 1) 80%
-  );
+  background-color: #62a3b1;
   border-radius: 5px;
   border-radius: 50px 15px;
   display: flex;
@@ -397,7 +391,7 @@ ul {
   overflow-y: auto;
   overflow-x: hidden;
   white-space: normal;
-  scrollbar-color: var(--secondDarkest) #8fbcc5;
+  scrollbar-color: var(--secondDarkest) #62a3b1;
   scrollbar-width: thin;
 }
 
