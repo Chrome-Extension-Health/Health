@@ -400,7 +400,7 @@ async function callAPI(muscle, type, diff, name, message, container) {
           instructionsListItem.remove();
         }
         if (!resultsLoaded) {
-          // getVid(keyword, ul_clone); // comment to not run API
+          getVid(keyword, ul_clone); // comment to not run API
           resultsLoaded = true;
           ul_clone.appendChild(li_clone);
           expandedBox.appendChild(spanCl);
@@ -473,29 +473,32 @@ function muscleGroupImg(container) {
   // show img
   let showIcon = document.createElement("i");
   showIcon.classList.add("fa-solid", "fa-eye", "showIcon");
-  showIcon.textContent = "Image";
   imgBtnCon.appendChild(showIcon);
 
   // hide img
   let hideIcon = document.createElement("i");
   hideIcon.classList.add("fa-solid", "fa-eye-slash", "hideIcon");
-  hideIcon.textContent = "Image";
+  hideIcon.style.display = "none";
   imgBtnCon.appendChild(hideIcon);
 
-  // show and hide img on click
+  // img
   let muscleImg = document.createElement("img");
+  muscleImg.className = "muscleImg";
+  muscleImg.src = "./muscles.jpg";
+  bodyContainer.insertBefore(muscleImg, container);
+
+  // show and hide img on click
   showIcon.addEventListener("click", function () {
-    muscleImg.style.display = "block";
-    muscleImg.className = "muscleImg";
-    muscleImg.src = "./muscles.jpg";
-    showIcon.style.color = darkest;
-    hideIcon.style.color = "grey";
-    bodyContainer.insertBefore(muscleImg, container);
+    muscleImg.style.display = "none";
+
+    showIcon.style.display = "none";
+    hideIcon.style.display = "block";
 
     hideIcon.addEventListener("click", function () {
-      showIcon.style.color = "grey";
-      hideIcon.style.color = darkest;
-      muscleImg.style.display = "none";
+      muscleImg.style.display = "block";
+
+      showIcon.style.display = "block";
+      hideIcon.style.display = "none";
     });
   });
 }
@@ -678,7 +681,8 @@ function nutritionHTML() {
     hideError();
     const ageSelect = document.getElementById("age-select").value;
     const sexSelect = document.getElementById("sex-select").value;
-    for (let i = 0; i < dailyIntake.length; i++) { // get calories group
+    for (let i = 0; i < dailyIntake.length; i++) {
+      // get calories group
       ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex
         ? (selectedCalories = dailyIntake[i].calories)
         : null;

@@ -239,9 +239,9 @@ input[type="search"] {
 /* ===== Container ===== */
 
 .imgBtnCon {
-  width: 100%;
+  width: 90%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   margin: 10px 0;
 }
@@ -249,15 +249,13 @@ input[type="search"] {
 .showIcon {
   cursor: pointer;
   font-size: 14px;
-  color: grey;
-  transition: color 0.4s ease-in-out;
+  color: var(--darkest);
 }
 
 .hideIcon {
   cursor: pointer;
   font-size: 14px;
-  margin-left: 15px;
-  transition: color 0.4s ease-in-out;
+  color: grey;
 }
 
 .muscleImg {
@@ -315,7 +313,7 @@ ul {
 }
 
 .expandIcon:hover {
-  animation: rotate 2.5s infinite linear;
+  animation: rotate 2.3s infinite linear;
 }
 
 @keyframes rotate {
@@ -324,8 +322,9 @@ ul {
   }
   50% {
     transform: rotate(-180deg);
+    font-size: 18px;
   }
-  0% {
+  100% {
     transform: rotate(-360deg);
   }
 }
@@ -359,13 +358,7 @@ ul {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgb(156, 228, 216);
-  background: linear-gradient(
-    180deg,
-    rgba(98, 177, 125, 1) 0%,
-    rgba(98, 177, 158, 1) 30%,
-    rgba(98, 163, 177, 1) 80%
-  );
+  background-color: #62a3b1;
   border-radius: 5px;
   border-radius: 50px 15px;
   display: flex;
@@ -398,7 +391,7 @@ ul {
   overflow-y: auto;
   overflow-x: hidden;
   white-space: normal;
-  scrollbar-color: var(--secondDarkest) #8fbcc5;
+  scrollbar-color: var(--secondDarkest) #62a3b1;
   scrollbar-width: thin;
 }
 
