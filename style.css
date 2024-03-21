@@ -313,7 +313,7 @@ ul {
 }
 
 .expandIcon:hover {
-  animation: rotate 2.5s infinite linear;
+  animation: rotate 2.3s infinite linear;
 }
 
 @keyframes rotate {
@@ -322,8 +322,9 @@ ul {
   }
   50% {
     transform: rotate(-180deg);
+    font-size: 18px;
   }
-  0% {
+  100% {
     transform: rotate(-360deg);
   }
 }
