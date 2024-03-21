@@ -38,9 +38,9 @@
 
 .title {
   margin-top: 10px;
-  color: var(--middle);
+  color: rgb(126, 128, 247);
   text-align: center;
-  text-shadow: 3px 0px 1px black;
+  text-shadow: 3px 0px 1px rgb(7, 54, 245);
 }
 
 .btnContainer {
