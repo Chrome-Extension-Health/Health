@@ -85,7 +85,7 @@ async function fetchNutritionAPI(input) {
   const ageSelect = document.getElementById("age-select").value;
   const sexSelect = document.getElementById("sex-select").value;
   for (let i = 0; i < dailyIntake.length; i++) {
-    ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex // still need code to block empty inputs
+    ageSelect == dailyIntake[i].age && sexSelect == dailyIntake[i].sex // still need code to block empty inputs, used for loop so error msg shown everytime
       ? (selectedCalories = dailyIntake[i].calories)
       : showError("Please select the corresponding age or sex.");
   }
