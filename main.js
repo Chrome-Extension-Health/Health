@@ -505,8 +505,7 @@ function muscleGroupImg(container) {
 
 // Youtube API
 async function getVid(keyword, ul_clone) {
-  const url =
-    "https://youtube-search.p.rapidapi.com/search?key=AIzaSyDqNLOQHnWw49D-TNJGqVghSG7nBk1CNI0&";
+  const url = `https://youtube-search.p.rapidapi.com/search?key=AIzaSyDqNLOQHnWw49D-TNJGqVghSG7nBk1CNI0&`;
 
   const response = await fetch(
     url +
