@@ -1,7 +1,3 @@
-const Exercise_API_KEY = process.env.Exercise_API_KEY || "";
-const Youtube_API_KEY = process.env.Youtube_API_KEY || "";
-const X_Rapid_API_KEY = process.env.X_Rapid_API_KEY || "";
-
 // body container for all elements
 let bodyContainer = document.createElement("div");
 bodyContainer.className = "bodyContainer";
@@ -348,7 +344,7 @@ async function callAPI(muscle, type, diff, name, message, container) {
       `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}&type=${type}&difficulty=${diff}&name=${name}`,
       {
         headers: {
-          "X-Api-Key": Exercise_API_KEY,
+          "X-Api-Key": "",
         }, // put ur key
       }
     );
@@ -509,7 +505,7 @@ function muscleGroupImg(container) {
 
 // Youtube API
 async function getVid(keyword, ul_clone) {
-  const url = `https://youtube-search.p.rapidapi.com/search?key=${Youtube_API_KEY}&`;
+  const url = `https://youtube-search.p.rapidapi.com/search?key=&`;
 
   const response = await fetch(
     url +
@@ -526,7 +522,7 @@ async function getVid(keyword, ul_clone) {
       }),
     {
       headers: {
-        "X-RapidAPI-Key": X_Rapid_API_KEY,
+        "X-RapidAPI-Key": "",
         "X-RapidAPI-Host": "youtube-search.p.rapidapi.com",
       },
     }
@@ -725,7 +721,7 @@ async function fetchNutritionAPI(input) {
   let fiberMinLimit = 25;
   let sugarMaxLimit = selectedCalories * 0.1;
   const response = await fetch(nutritionAPI + input, {
-    headers: { "X-Api-Key": "fSlNftfk2M+xcXCj+72fPg==LtbIt40Y0yAjeaJ4" },
+    headers: { "X-Api-Key": "" },
   });
   const result = await response.json();
   if (result) {
@@ -833,8 +829,7 @@ async function fetchNutritionAPI(input) {
 
 async function getRecipeVid(keyword) {
   const resultContainer = document.getElementById("result-container");
-  const url =
-    "https://youtube-search.p.rapidapi.com/search?key=AIzaSyDqNLOQHnWw49D-TNJGqVghSG7nBk1CNI0&";
+  const url = `https://youtube-search.p.rapidapi.com/search?key=&`;
   const response = await fetch(
     url +
       new URLSearchParams({
@@ -850,7 +845,7 @@ async function getRecipeVid(keyword) {
       }),
     {
       headers: {
-        "X-RapidAPI-Key": "81b7b379e6msh2104c760c387f06p1b2c07jsnb2b4274400e6",
+        "X-RapidAPI-Key": "",
         "X-RapidAPI-Host": "youtube-search.p.rapidapi.com",
       },
     }
