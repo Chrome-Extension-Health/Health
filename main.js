@@ -27,7 +27,7 @@ function landingPage() {
   // Title
   let title = document.createElement("h1");
   title.className = "title";
-  title.textContent = "FitFusion";
+  title.textContent = "VitalityTrack";
   landingPage.appendChild(title);
 
   // Button Container
@@ -558,6 +558,7 @@ const dailyIntake = [
   { group: "elder female", age: ">=60", sex: "female", calories: 1900 },
 ];
 let selectedCalories = 0;
+let searchItems = [];
 
 function nutritionHTML() {
   bodyContainer.innerHTML = "";
@@ -677,6 +678,7 @@ function nutritionHTML() {
   submitButton.addEventListener("click", async function () {
     const resultContainer = document.getElementById("result-container");
     resultContainer.innerHTML = ""; // clear
+    searchItems.length = 0;
     hideError();
     const ageSelect = document.getElementById("age-select").value;
     const sexSelect = document.getElementById("sex-select").value;
@@ -692,8 +694,10 @@ function nutritionHTML() {
     const regex = new RegExp(/^[a-zA-Z0-9 ]*$/);
     selectedCalories == 0 // check calories group
       ? showError("Please select the corresponding age or sex.")
-      : regex.test(searching) // check input
-      ? (await fetchNutritionAPI(searching), getRecipeVid(searching))
+      : regex.test(searching) && searching !== "" // check input
+      ? (await fetchNutritionAPI(searching),
+        nutritionNotes(),
+        getRecipeVid(searchItems.join()))
       : showError("Please input correctly.");
   });
 
@@ -734,7 +738,7 @@ async function fetchNutritionAPI(input) {
           continue;
         }
         key === "name"
-          ? (li.textContent = `Name: ${value}`)
+          ? ((li.textContent = `Name: ${value}`), searchItems.push(value))
           : key === "calories"
           ? (li.textContent = `Calories: ${value}kcal ${(
               value / selectedCalories
@@ -827,18 +831,44 @@ async function fetchNutritionAPI(input) {
   }
 }
 
-async function getRecipeVid(keyword) {
+async function nutritionNotes() {
+  const resultContainer = document.getElementById("result-container");
+  const orderList = document.createElement("ul");
+  orderList.textContent = "Notes:";
+  const list1 = document.createElement("li");
+  list1.textContent =
+    "1. % values are calcuated based on a low activity level person, 65kg for men and 55kg for women.";
+  orderList.appendChild(list1);
+  const list2 = document.createElement("li");
+  list2.textContent =
+    "2. The % range mean minimum requirement and maximum limit respectively";
+  orderList.appendChild(list2);
+  const list3 = document.createElement("li");
+  list3.textContent = "3. The % in fiber means minimum requirement";
+  orderList.appendChild(list3);
+  const list4 = document.createElement("li");
+  list4.textContent =
+    "4. Cholesterol isn't displayed as dietary cholesterol doesn't affect blood cholesterol much.";
+  orderList.appendChild(list4);
+  const list5 = document.createElement("li");
+  list5.textContent =
+    "5. Trans fat isn't displayed as the API doesn't support it.";
+  orderList.appendChild(list5);
+  resultContainer.appendChild(orderList);
+}
+
+async function getRecipeVid(searchItems) {
   const resultContainer = document.getElementById("result-container");
   const url = `https://youtube-search.p.rapidapi.com/search?key=&`;
   const response = await fetch(
     url +
       new URLSearchParams({
         part: ["snippet"],
-        maxResults: 2,
+        maxResults: 1,
         order: "relevance",
-        topicId: "/m/027x7n",
+        topicId: "/m/02wbm",
         regionCode: "HK",
-        q: `${keyword} recipe`,
+        q: `${searchItems} recipe`,
         safeSearch: "moderate",
         type: ["video"],
         videoEmbeddable: "true",
