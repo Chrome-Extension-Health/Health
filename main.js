@@ -859,7 +859,8 @@ async function nutritionNotes() {
 
 async function getRecipeVid(searchItems) {
   const resultContainer = document.getElementById("result-container");
-  const url = `https://youtube-search.p.rapidapi.com/search?key=AIzaSyDqNLOQHnWw49D-TNJGqVghSG7nBk1CNI0&`;
+  const url =
+    "https://youtube-search.p.rapidapi.com/search?key=AIzaSyDqNLOQHnWw49D-TNJGqVghSG7nBk1CNI0&";
   const response = await fetch(
     url +
       new URLSearchParams({
